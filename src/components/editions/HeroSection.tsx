@@ -7,6 +7,7 @@ import { ChevronDown } from 'lucide-react';
 /**
  * HeroSection Component
  * Demonstrates:
+ * - Video background with gradient overlay
  * - Staggered load animations
  * - Parallax effects on scroll
  * - Animated scroll indicator
@@ -30,12 +31,35 @@ export const HeroSection: React.FC = () => {
   return (
     <section
       ref={parallaxRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start"
       style={{
         opacity: heroOpacity,
         transform: `scale(${heroScale}) translateY(${offset}px)`,
       }}
     >
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23000'/%3E%3C/svg%3E"
+        >
+          {/* Using a creative commons abstract video */}
+          <source
+            src="https://cdn.shopify.com/videos/c/o/v/a2d5a83e7f1d4a3a9f3e4d5c6b7a8d9e.mp4"
+            type="video/mp4"
+          />
+        </video>
+        
+        {/* Multi-layer gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(var(--background))_70%)]" />
+      </div>
+
       {/* Geometric frame decoration */}
       <GeometricFrame />
 
@@ -116,7 +140,7 @@ export const HeroSection: React.FC = () => {
           market, and manage your business with AI-powered intelligence.
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons with magnetic effect */}
         <div
           className={cn(
             'flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000 ease-out-expo',
@@ -128,14 +152,19 @@ export const HeroSection: React.FC = () => {
         >
           <a
             href="#sidekick"
-            className="group relative overflow-hidden px-8 py-4 bg-foreground text-background font-medium rounded-full transition-transform hover:scale-105"
+            data-magnetic
+            data-cursor-text="Explore"
+            className="group relative overflow-hidden px-8 py-4 bg-foreground text-background font-medium rounded-full transition-all duration-300 hover:scale-105"
+            style={{ transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}
           >
             <span className="relative z-10">Explore updates</span>
             <div className="absolute inset-0 bg-gradient-to-r from-editions-gold to-editions-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
           <a
             href="#"
-            className="px-8 py-4 border border-border text-foreground font-medium rounded-full transition-all hover:bg-foreground hover:text-background hover:border-foreground"
+            data-magnetic
+            className="px-8 py-4 border border-border text-foreground font-medium rounded-full transition-all duration-300 hover:bg-foreground hover:text-background hover:border-foreground"
+            style={{ transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}
           >
             Start for free
           </a>
