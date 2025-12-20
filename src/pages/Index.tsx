@@ -4,12 +4,12 @@ import { HeroSection } from '@/components/editions/HeroSection';
 import { GeometricBackground } from '@/components/editions/GeometricBackground';
 import { SidekickSection } from '@/components/editions/SidekickSection';
 import { AgenticSection, OnlineSection } from '@/components/editions/FeatureSections';
-import { StatsSection, TextEffectsShowcase } from '@/components/editions/StatsSection';
+import { StatsSection, SkillsShowcase } from '@/components/editions/StatsSection';
 import { Footer } from '@/components/editions/Footer';
 import { CustomCursor } from '@/components/editions/CustomCursor';
 
 /**
- * Shopify Editions Winter '26 Clone
+ * Sayan Dutta - Portfolio Website
  * 
  * Animation Techniques Demonstrated:
  * 
@@ -36,7 +36,7 @@ const Index: React.FC = () => {
 
       {/* Main scrollable content with snap points */}
       <main className="snap-y snap-proximity">
-        {/* Hero with video background and dramatic entrance */}
+        {/* Hero with video background and typewriter effect */}
         <div className="snap-start">
           <HeroSection />
         </div>
@@ -46,27 +46,27 @@ const Index: React.FC = () => {
           <StatsSection />
         </div>
 
-        {/* Sidekick section with staggered card animations */}
+        {/* Skills section with typewriter and scramble effects */}
+        <div className="snap-start">
+          <SkillsShowcase />
+        </div>
+
+        {/* Projects section with staggered card animations */}
         <div className="snap-start">
           <SidekickSection />
         </div>
 
-        {/* Agentic section with alternating slide animations */}
+        {/* Experience section with alternating slide animations */}
         <div className="snap-start">
           <AgenticSection />
         </div>
 
-        {/* Online section with grid reveal and blur-in */}
+        {/* Education section with grid reveal and blur-in */}
         <div className="snap-start">
           <OnlineSection />
         </div>
 
-        {/* Text effects showcase with typewriter and scramble */}
-        <div className="snap-start">
-          <TextEffectsShowcase />
-        </div>
-
-        {/* Footer with link hover effects */}
+        {/* Contact/Footer with text effects */}
         <div className="snap-start">
           <Footer />
         </div>

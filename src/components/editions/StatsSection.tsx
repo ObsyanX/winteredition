@@ -1,18 +1,20 @@
 import React from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { CountUp, TextScramble, Typewriter } from '@/hooks/useTextAnimations';
 import { cn } from '@/lib/utils';
 
 /**
- * StatsSection Component
+ * StatsSection Component - Portfolio Version
+ * Demonstrates counting number animations
  */
 export const StatsSection: React.FC = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   const stats = [
-    { value: '150+', label: 'Product Updates' },
-    { value: '2.5M+', label: 'Merchants Worldwide' },
-    { value: '10%', label: 'Conversion Increase' },
-    { value: '24/7', label: 'AI Support' },
+    { value: 8.79, suffix: '', label: 'CGPA', decimals: 2 },
+    { value: 3, suffix: '+', label: 'Projects', decimals: 0 },
+    { value: 2, suffix: '+', label: 'Internships', decimals: 0 },
+    { value: 5, suffix: '+', label: 'Certifications', decimals: 0 },
   ];
 
   return (
@@ -35,10 +37,18 @@ export const StatsSection: React.FC = () => {
               )}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2">
-                {stat.value}
+              <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 bg-gradient-to-r from-editions-gold to-editions-purple bg-clip-text text-transparent">
+                <CountUp 
+                  end={stat.value} 
+                  duration={2000} 
+                  decimals={stat.decimals}
+                  suffix={stat.suffix}
+                  trigger={isVisible} 
+                />
               </div>
-              <p className="text-sm md:text-base text-muted-foreground">{stat.label}</p>
+              <p className="text-sm md:text-base text-muted-foreground">
+                <TextScramble text={stat.label} trigger={isVisible} speed={60} />
+              </p>
             </div>
           ))}
         </div>
@@ -48,13 +58,37 @@ export const StatsSection: React.FC = () => {
 };
 
 /**
- * TextEffectsShowcase Component
+ * SkillsShowcase Component
+ * Demonstrates typewriter effects for skills
  */
-export const TextEffectsShowcase: React.FC = () => {
+export const SkillsShowcase: React.FC = () => {
   const { ref: sectionRef, isVisible } = useScrollAnimation();
 
+  const skillCategories = [
+    { 
+      title: 'Languages', 
+      skills: ['Java', 'C++', 'Python', 'JavaScript', 'SQL'],
+      color: 'editions-gold'
+    },
+    { 
+      title: 'Frameworks', 
+      skills: ['React.js', 'Node.js', 'Tailwind CSS'],
+      color: 'editions-purple'
+    },
+    { 
+      title: 'Tools', 
+      skills: ['MongoDB', 'Git', 'GitHub', 'Qlik Sense', 'Power BI'],
+      color: 'editions-blue'
+    },
+    { 
+      title: 'Core CS', 
+      skills: ['DSA', 'DBMS', 'OS', 'OOP'],
+      color: 'editions-green'
+    },
+  ];
+
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="updates">
+    <section className="relative py-32 px-6 overflow-hidden" id="skills">
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
@@ -62,7 +96,7 @@ export const TextEffectsShowcase: React.FC = () => {
         }} />
       </div>
 
-      <div className="container mx-auto max-w-4xl relative z-10">
+      <div className="container mx-auto max-w-5xl relative z-10">
         <div
           ref={sectionRef}
           className={cn(
@@ -71,28 +105,50 @@ export const TextEffectsShowcase: React.FC = () => {
           )}
         >
           <p className="text-sm tracking-[0.3em] uppercase text-editions-green mb-4">
-            WINTER 2026 UPDATES
+            <TextScramble text="TECHNICAL PROFICIENCY" trigger={isVisible} speed={40} />
           </p>
 
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display mb-8">
-            Building the future of commerce
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display mb-12">
+            <Typewriter 
+              text="Skills & Expertise" 
+              speed={60} 
+              trigger={isVisible}
+              cursorClassName="text-editions-gold"
+            />
           </h2>
 
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
-            Every feature designed with one goal: helping entrepreneurs succeed.
-          </p>
-
-          <div className="relative max-w-xl mx-auto">
-            <div className="p-6 rounded-2xl bg-card border border-border">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-3 rounded-full bg-destructive" />
-                <div className="w-3 h-3 rounded-full bg-editions-gold" />
-                <div className="w-3 h-3 rounded-full bg-editions-green" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            {skillCategories.map((category, index) => (
+              <div
+                key={category.title}
+                className={cn(
+                  'p-6 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm transition-all duration-700',
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                )}
+                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
+              >
+                <h3 className={cn(
+                  'text-lg font-semibold mb-4',
+                  `text-${category.color}`
+                )}>
+                  {category.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill, skillIndex) => (
+                    <span
+                      key={skill}
+                      className={cn(
+                        'px-3 py-1.5 text-sm rounded-full border border-border/50 bg-background/50 transition-all duration-500',
+                        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                      )}
+                      style={{ transitionDelay: `${(index * 150) + (skillIndex * 50) + 300}ms` }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="text-left font-mono text-sm">
-                <span className="text-editions-purple">$</span> shopify sidekick --generate
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
