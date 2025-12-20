@@ -51,7 +51,7 @@ const Index: React.FC = () => {
           <SkillsShowcase />
         </div>
 
-        {/* Projects section with staggered card animations */}
+        {/* Projects section with modal and staggered card animations */}
         <div className="snap-start">
           <SidekickSection />
         </div>
@@ -61,7 +61,7 @@ const Index: React.FC = () => {
           <AgenticSection />
         </div>
 
-        {/* Education section with grid reveal and blur-in */}
+        {/* Education & Achievements section with grid reveal */}
         <div className="snap-start">
           <OnlineSection />
         </div>
