@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useScrollProgress, useParallax } from '@/hooks/useScrollAnimation';
+import { Typewriter, TextScramble } from '@/hooks/useTextAnimations';
 import { GeometricFrame } from './GeometricBackground';
 import { cn } from '@/lib/utils';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Download, Mail, Github, Linkedin } from 'lucide-react';
+import profilePhoto from '@/assets/profile-photo.jpeg';
 
 /**
- * HeroSection Component
+ * HeroSection Component - Portfolio Version
  * Demonstrates:
  * - Video background with gradient overlay
  * - Staggered load animations
  * - Parallax effects on scroll
+ * - Typewriter and text scramble effects
  * - Animated scroll indicator
- * - Typography with special character styling
  */
 export const HeroSection: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,14 +21,19 @@ export const HeroSection: React.FC = () => {
   const { ref: parallaxRef, offset } = useParallax(0.3);
 
   useEffect(() => {
-    // Trigger entrance animations after mount
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  // Calculate opacity and scale based on scroll for exit animation
   const heroOpacity = Math.max(0, 1 - scrollY / 600);
   const heroScale = Math.max(0.8, 1 - scrollY / 3000);
+
+  const roles = [
+    'Software Engineer',
+    'Full Stack Developer',
+    'AI Enthusiast',
+    'Problem Solver',
+  ];
 
   return (
     <section
@@ -47,7 +54,6 @@ export const HeroSection: React.FC = () => {
           className="absolute inset-0 w-full h-full object-cover"
           poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23000'/%3E%3C/svg%3E"
         >
-          {/* Using a creative commons abstract video */}
           <source
             src="https://cdn.shopify.com/videos/c/o/v/a2d5a83e7f1d4a3a9f3e4d5c6b7a8d9e.mp4"
             type="video/mp4"
@@ -55,133 +61,159 @@ export const HeroSection: React.FC = () => {
         </video>
         
         {/* Multi-layer gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(var(--background))_70%)]" />
       </div>
 
-      {/* Geometric frame decoration */}
       <GeometricFrame />
 
       {/* Content container */}
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        {/* Eyebrow text */}
-        <p
+        {/* Profile Photo */}
+        <div
           className={cn(
-            'text-sm md:text-base tracking-[0.3em] uppercase text-muted-foreground mb-8 transition-all duration-1000 ease-out-expo',
-            isLoaded
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
+            'mb-8 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
           )}
         >
-          Shopify Editions
+          <div className="relative inline-block">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-editions-gold/50 shadow-2xl">
+              <img
+                src={profilePhoto}
+                alt="Sayan Dutta - Software Engineer"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Animated ring */}
+            <div className="absolute inset-0 rounded-full border-2 border-editions-purple/30 animate-ping" style={{ animationDuration: '3s' }} />
+          </div>
+        </div>
+
+        {/* Greeting with scramble effect */}
+        <p
+          className={cn(
+            'text-sm md:text-base tracking-[0.3em] uppercase text-muted-foreground mb-4 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          )}
+        >
+          <TextScramble text="Hello, I'm" trigger={isLoaded} speed={40} />
         </p>
 
         {/* Main heading */}
         <h1 className="relative mb-6">
-          {/* "The" text */}
           <span
             className={cn(
-              'block text-4xl md:text-6xl lg:text-7xl font-light tracking-tight transition-all duration-1000 ease-out-expo',
-              isLoaded
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-12'
-            )}
-            style={{ transitionDelay: '100ms' }}
-          >
-            The
-          </span>
-
-          {/* "Renaissance" with stylized letters */}
-          <span
-            className={cn(
-              'block text-6xl md:text-8xl lg:text-[10rem] font-display font-medium tracking-tight leading-none mt-2 transition-all duration-1000 ease-out-expo',
-              isLoaded
-                ? 'opacity-100 translate-y-0 blur-0'
-                : 'opacity-0 translate-y-16 blur-sm'
+              'block text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight leading-none transition-all duration-1000 ease-out-expo',
+              isLoaded ? 'opacity-100 translate-y-0 blur-0' : 'opacity-0 translate-y-16 blur-sm'
             )}
             style={{ transitionDelay: '200ms' }}
           >
-            R
-            <span className="font-display italic">e</span>
-            n
-            <span className="font-display italic">a</span>
-            <span className="font-display italic">i</span>
-            ss
-            <span className="font-display italic">a</span>
-            nce
-          </span>
-
-          {/* "Edition" text */}
-          <span
-            className={cn(
-              'block text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mt-2 transition-all duration-1000 ease-out-expo',
-              isLoaded
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-12'
-            )}
-            style={{ transitionDelay: '300ms' }}
-          >
-            Edition
+            <span className="bg-gradient-to-r from-editions-gold via-foreground to-editions-purple bg-clip-text text-transparent">
+              Sayan Dutta
+            </span>
           </span>
         </h1>
 
-        {/* Subtitle */}
-        <p
+        {/* Typewriter Role */}
+        <div
           className={cn(
-            'text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 transition-all duration-1000 ease-out-expo',
-            isLoaded
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
+            'text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 h-10 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
           style={{ transitionDelay: '400ms' }}
         >
-          Introducing over 150+ product updates designed to help you build,
-          market, and manage your business with AI-powered intelligence.
-        </p>
+          <Typewriter
+            text={roles}
+            speed={80}
+            cursor={true}
+            cursorClassName="text-editions-gold"
+            loop={true}
+            trigger={isLoaded}
+          />
+        </div>
 
-        {/* CTA Buttons with magnetic effect */}
-        <div
+        {/* Brief intro */}
+        <p
           className={cn(
-            'flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000 ease-out-expo',
-            isLoaded
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
+            'text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
           style={{ transitionDelay: '500ms' }}
         >
-          <a
-            href="#sidekick"
-            data-magnetic
-            data-cursor-text="Explore"
-            className="group relative overflow-hidden px-8 py-4 bg-foreground text-background font-medium rounded-full transition-all duration-300 hover:scale-105"
-            style={{ transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}
-          >
-            <span className="relative z-10">Explore updates</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-editions-gold to-editions-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </a>
-          <a
-            href="#"
-            data-magnetic
-            className="px-8 py-4 border border-border text-foreground font-medium rounded-full transition-all duration-300 hover:bg-foreground hover:text-background hover:border-foreground"
-            style={{ transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}
-          >
-            Start for free
-          </a>
-        </div>
+          Final-Year CSE Student with CGPA 8.79 | Passionate about building scalable software solutions with AI integration
+        </p>
 
-        {/* Winter '26 badge */}
+        {/* CTA Buttons */}
         <div
           className={cn(
-            'mt-16 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 transition-all duration-1000 ease-out-expo',
-            isLoaded
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-8'
+            'flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
           style={{ transitionDelay: '600ms' }}
         >
-          <span className="w-2 h-2 rounded-full bg-editions-gold animate-pulse" />
-          <span className="text-sm text-muted-foreground">Winter '26</span>
+          <a
+            href="#projects"
+            data-magnetic
+            data-cursor-text="View"
+            className="group relative overflow-hidden px-8 py-4 bg-foreground text-background font-medium rounded-full transition-all duration-300 hover:scale-105"
+          >
+            <span className="relative z-10">View Projects</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-editions-gold to-editions-purple opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </a>
+          <a
+            href="mailto:duttasayan835@gmail.com"
+            data-magnetic
+            className="group flex items-center gap-2 px-8 py-4 border border-border text-foreground font-medium rounded-full transition-all duration-300 hover:bg-foreground hover:text-background"
+          >
+            <Mail className="w-4 h-4" />
+            <span>Get in Touch</span>
+          </a>
+        </div>
+
+        {/* Social links */}
+        <div
+          className={cn(
+            'mt-10 flex items-center justify-center gap-6 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          )}
+          style={{ transitionDelay: '700ms' }}
+        >
+          <a
+            href="https://github.com/sayandutta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all duration-300 hover:scale-110"
+          >
+            <Github className="w-5 h-5" />
+          </a>
+          <a
+            href="https://linkedin.com/in/sayandutta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all duration-300 hover:scale-110"
+          >
+            <Linkedin className="w-5 h-5" />
+          </a>
+          <a
+            href="#"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all duration-300"
+          >
+            <Download className="w-4 h-4" />
+            <span className="text-sm">Resume</span>
+          </a>
+        </div>
+
+        {/* Location badge */}
+        <div
+          className={cn(
+            'mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 transition-all duration-1000 ease-out-expo',
+            isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          )}
+          style={{ transitionDelay: '800ms' }}
+        >
+          <span className="w-2 h-2 rounded-full bg-editions-green animate-pulse" />
+          <span className="text-sm text-muted-foreground">Siliguri, India</span>
         </div>
       </div>
 
@@ -192,7 +224,7 @@ export const HeroSection: React.FC = () => {
           isLoaded ? 'opacity-100' : 'opacity-0',
           scrollY > 100 ? 'opacity-0' : 'opacity-100'
         )}
-        style={{ transitionDelay: '800ms' }}
+        style={{ transitionDelay: '900ms' }}
       >
         <span className="text-xs text-muted-foreground tracking-widest uppercase">
           Scroll

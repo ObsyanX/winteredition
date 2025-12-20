@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useScrollDirection, useScrollProgress } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
-import { Menu, X, Search, ChevronDown } from 'lucide-react';
+import { Menu, X, Download } from 'lucide-react';
+import avatarLogo from '@/assets/avatar-logo.png';
 
 /**
- * Navigation Component
+ * Navigation Component - Portfolio Version
  * Demonstrates:
  * - Scroll-based show/hide behavior
  * - Backdrop blur on scroll
@@ -20,10 +21,11 @@ export const Navigation: React.FC = () => {
   const isHidden = scrollDirection === 'down' && scrollY > 200;
 
   const navItems = [
-    { label: 'Sidekick', href: '#sidekick' },
-    { label: 'Agentic', href: '#agentic' },
-    { label: 'Online', href: '#online' },
-    { label: 'Updates', href: '#updates' },
+    { label: 'About', href: '#skills' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Education', href: '#education' },
+    { label: 'Contact', href: '#contact' },
   ];
 
   return (
@@ -50,33 +52,19 @@ export const Navigation: React.FC = () => {
               href="#"
               className="group flex items-center gap-3 transition-opacity hover:opacity-80"
             >
-              <div className="relative">
-                <svg
-                  className="h-8 w-8"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                >
-                  <path
-                    d="M20 5L35 12.5V27.5L20 35L5 27.5V12.5L20 5Z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className="transition-all group-hover:stroke-editions-gold"
-                  />
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="6"
-                    fill="currentColor"
-                    className="transition-all group-hover:fill-editions-gold"
-                  />
-                </svg>
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-editions-gold/50">
+                <img 
+                  src={avatarLogo} 
+                  alt="Sayan Dutta"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="hidden sm:block">
                 <span className="text-sm font-medium tracking-wide">
-                  Shopify Editions
+                  Sayan Dutta
                 </span>
                 <span className="text-xs text-muted-foreground ml-2">
-                  Winter '26
+                  Software Engineer
                 </span>
               </div>
             </a>
@@ -95,27 +83,17 @@ export const Navigation: React.FC = () => {
                   <span className="absolute bottom-0 left-4 right-4 h-[1px] bg-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </a>
               ))}
-
-              {/* Editions Dropdown */}
-              <button className="group flex items-center gap-1 px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-                <span>Editions</span>
-                <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
-              </button>
             </div>
 
             {/* Right side actions */}
             <div className="flex items-center gap-4">
-              {/* Search button */}
-              <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                <Search className="h-5 w-5" />
-              </button>
-
-              {/* CTA Button */}
+              {/* Resume Button */}
               <a
                 href="#"
-                className="hidden sm:block relative overflow-hidden px-5 py-2.5 text-sm font-medium bg-foreground text-background rounded-full group"
+                className="hidden sm:flex items-center gap-2 relative overflow-hidden px-5 py-2.5 text-sm font-medium bg-foreground text-background rounded-full group"
               >
-                <span className="relative z-10">Start for free</span>
+                <Download className="w-4 h-4 relative z-10" />
+                <span className="relative z-10">Resume</span>
                 {/* Hover effect */}
                 <div className="absolute inset-0 bg-editions-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
               </a>
@@ -166,14 +144,15 @@ export const Navigation: React.FC = () => {
           <a
             href="#"
             className={cn(
-              'mt-8 px-8 py-4 text-lg font-medium bg-foreground text-background rounded-full transition-all duration-500',
+              'mt-8 flex items-center gap-2 px-8 py-4 text-lg font-medium bg-foreground text-background rounded-full transition-all duration-500',
               isMobileMenuOpen
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-8'
             )}
-            style={{ transitionDelay: '600ms' }}
+            style={{ transitionDelay: '700ms' }}
           >
-            Start for free
+            <Download className="w-5 h-5" />
+            Resume
           </a>
         </div>
       </div>
