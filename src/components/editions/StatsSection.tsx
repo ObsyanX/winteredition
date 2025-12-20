@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 /**
  * StatsSection Component - Portfolio Version
- * Demonstrates counting number animations
+ * Demonstrates counting number animations with resume data
  */
 export const StatsSection: React.FC = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -13,8 +13,8 @@ export const StatsSection: React.FC = () => {
   const stats = [
     { value: 8.79, suffix: '', label: 'CGPA', decimals: 2 },
     { value: 3, suffix: '+', label: 'Projects', decimals: 0 },
-    { value: 2, suffix: '+', label: 'Internships', decimals: 0 },
-    { value: 5, suffix: '+', label: 'Certifications', decimals: 0 },
+    { value: 2, suffix: '', label: 'Internships', decimals: 0 },
+    { value: 4, suffix: '', label: 'Awards', decimals: 0 },
   ];
 
   return (
@@ -59,7 +59,7 @@ export const StatsSection: React.FC = () => {
 
 /**
  * SkillsShowcase Component
- * Demonstrates typewriter effects for skills
+ * Demonstrates typewriter effects for skills - aligned with resume
  */
 export const SkillsShowcase: React.FC = () => {
   const { ref: sectionRef, isVisible } = useScrollAnimation();
@@ -67,23 +67,23 @@ export const SkillsShowcase: React.FC = () => {
   const skillCategories = [
     { 
       title: 'Languages', 
-      skills: ['Java', 'C++', 'Python', 'JavaScript', 'SQL'],
-      color: 'editions-gold'
+      skills: ['Java', 'C++', 'Python', 'JavaScript (ES6+)', 'SQL'],
+      color: 'text-editions-gold'
     },
     { 
-      title: 'Frameworks', 
+      title: 'Frameworks & Libraries', 
       skills: ['React.js', 'Node.js', 'Tailwind CSS'],
-      color: 'editions-purple'
+      color: 'text-editions-purple'
     },
     { 
-      title: 'Tools', 
-      skills: ['MongoDB', 'Git', 'GitHub', 'Qlik Sense', 'Power BI'],
-      color: 'editions-blue'
+      title: 'Databases & Tools', 
+      skills: ['MongoDB', 'Git', 'GitHub', 'Netlify', 'Render', 'Qlik Sense', 'Power BI'],
+      color: 'text-editions-blue'
     },
     { 
       title: 'Core CS', 
-      skills: ['DSA', 'DBMS', 'OS', 'OOP'],
-      color: 'editions-green'
+      skills: ['Data Structures & Algorithms', 'DBMS', 'Operating Systems', 'OOP'],
+      color: 'text-editions-green'
     },
   ];
 
@@ -123,14 +123,12 @@ export const SkillsShowcase: React.FC = () => {
                 key={category.title}
                 className={cn(
                   'p-6 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm transition-all duration-700',
+                  'hover:border-editions-gold/30 hover:shadow-lg',
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 )}
                 style={{ transitionDelay: `${(index + 1) * 150}ms` }}
               >
-                <h3 className={cn(
-                  'text-lg font-semibold mb-4',
-                  `text-${category.color}`
-                )}>
+                <h3 className={cn('text-lg font-semibold mb-4', category.color)}>
                   {category.title}
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -139,6 +137,7 @@ export const SkillsShowcase: React.FC = () => {
                       key={skill}
                       className={cn(
                         'px-3 py-1.5 text-sm rounded-full border border-border/50 bg-background/50 transition-all duration-500',
+                        'hover:border-editions-gold/50 hover:bg-editions-gold/10',
                         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                       )}
                       style={{ transitionDelay: `${(index * 150) + (skillIndex * 50) + 300}ms` }}

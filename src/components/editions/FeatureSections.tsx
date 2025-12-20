@@ -1,225 +1,80 @@
 import React from 'react';
-import { useScrollAnimation, useParallax } from '@/hooks/useScrollAnimation';
+import { useScrollAnimation, useParallax, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
+import { TextScramble } from '@/hooks/useTextAnimations';
 import { cn } from '@/lib/utils';
-import { Bot, Brain, Workflow, ShoppingCart, Globe, Smartphone, CreditCard, Package, Truck } from 'lucide-react';
+import { Award, Briefcase, GraduationCap, Trophy, Users } from 'lucide-react';
 
 /**
- * AgenticSection Component
- * Demonstrates:
- * - Horizontal scroll reveal animation
- * - Alternating left/right fade-ins
- * - Parallax background elements
- * - Scale-up on scroll
+ * AgenticSection - Experience Section
+ * Demonstrates parallax background and alternating fade-in animations
  */
 export const AgenticSection: React.FC = () => {
-  const { ref: titleRef, isVisible: titleVisible } = useScrollAnimation();
-  const { ref: parallaxRef, offset } = useParallax(0.15);
+  const { ref: sectionRef, isVisible } = useScrollAnimation();
+  const { offset } = useParallax(0.2);
 
-  const features = [
+  const experiences = [
     {
-      icon: Bot,
-      title: "Autonomous Operations",
-      description: "AI agents that handle routine tasks independently, from inventory management to customer inquiries.",
-      color: "editions-purple",
+      title: 'Business Analytics Intern',
+      company: 'SmartBridge (Qlik)',
+      period: 'Apr – Jun 2024',
+      description: 'Developed interactive Qlik dashboards with user-friendly visualizations from provided datasets. Extracted KPIs to support operational decision-making.',
+      icon: Briefcase,
+      color: 'editions-blue',
     },
     {
-      icon: Brain,
-      title: "Intelligent Decision Making",
-      description: "Machine learning models that optimize pricing, predict demand, and personalize experiences.",
-      color: "editions-blue",
+      title: 'Generative AI Intern',
+      company: 'SmartBridge (Google Cloud)',
+      period: 'Sep – Oct 2024',
+      description: "Implemented and deployed production-ready models using Google Cloud's scalable infrastructure and APIs for AI-powered applications.",
+      icon: Briefcase,
+      color: 'editions-purple',
     },
     {
-      icon: Workflow,
-      title: "Self-Healing Workflows",
-      description: "Automated systems that detect issues and resolve them before they impact your business.",
-      color: "editions-green",
+      title: 'Tech Lead (Web) & Content Lead',
+      company: 'The CodeBird, UIT Burdwan',
+      period: '2024 – 2025',
+      description: 'Led web development initiatives and content strategy for community projects. Guided junior members on AI/ML tools, Git, and project best practices.',
+      icon: Users,
+      color: 'editions-gold',
     },
   ];
 
   return (
-    <section id="agentic" className="relative py-32 px-6 overflow-hidden">
-      {/* Parallax background orb */}
+    <section className="relative py-32 px-6 overflow-hidden" id="experience">
+      {/* Parallax background */}
       <div
-        ref={parallaxRef}
-        className="absolute top-1/2 right-0 w-[800px] h-[800px] -translate-y-1/2 translate-x-1/2 pointer-events-none"
-        style={{ transform: `translateY(${offset - 400}px) translateX(50%)` }}
+        className="absolute inset-0 opacity-10 pointer-events-none"
+        style={{ transform: `translateY(${offset}px)` }}
       >
-        <div className="w-full h-full rounded-full bg-gradient-to-br from-editions-purple/20 via-transparent to-editions-blue/10 blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-editions-gold to-editions-purple blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-editions-blue to-editions-green blur-3xl" />
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10">
-        {/* Section Header with scale animation */}
+      <div className="container mx-auto max-w-5xl relative z-10">
+        {/* Header */}
         <div
-          ref={titleRef}
+          ref={sectionRef}
           className={cn(
-            'text-center mb-24 transition-all duration-1000 ease-out-expo',
-            titleVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            'text-center mb-16 transition-all duration-1000',
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           )}
         >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-purple mb-4">Next Generation</p>
-          <h2 className="text-5xl md:text-7xl font-display mb-6">Agentic</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            AI that doesn't just assist—it acts. Autonomous agents that run your business while you focus on growth.
+          <p className="text-sm tracking-[0.3em] uppercase text-editions-blue mb-4">
+            <TextScramble text="PROFESSIONAL JOURNEY" trigger={isVisible} speed={40} />
           </p>
+          <h2 className="text-4xl md:text-6xl font-display">
+            Experience
+          </h2>
         </div>
 
-        {/* Alternating Feature Rows */}
-        {features.map((feature, index) => {
-          const isEven = index % 2 === 0;
-          return (
-            <FeatureRow
-              key={feature.title}
-              feature={feature}
-              isReversed={!isEven}
-              delay={index * 150}
-            />
-          );
-        })}
-      </div>
-    </section>
-  );
-};
-
-interface FeatureRowProps {
-  feature: {
-    icon: React.ElementType;
-    title: string;
-    description: string;
-    color: string;
-  };
-  isReversed?: boolean;
-  delay?: number;
-}
-
-const FeatureRow: React.FC<FeatureRowProps> = ({ feature, isReversed, delay = 0 }) => {
-  const { ref, isVisible } = useScrollAnimation({ delay });
-  const Icon = feature.icon;
-
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        'flex flex-col md:flex-row items-center gap-12 mb-24 last:mb-0',
-        isReversed && 'md:flex-row-reverse'
-      )}
-    >
-      {/* Visual Side */}
-      <div
-        className={cn(
-          'flex-1 transition-all duration-1000 ease-out-expo',
-          isVisible
-            ? 'opacity-100 translate-x-0'
-            : isReversed
-            ? 'opacity-0 translate-x-12'
-            : 'opacity-0 -translate-x-12'
-        )}
-      >
-        <div className="relative aspect-video rounded-2xl bg-gradient-to-br from-card to-muted border border-border overflow-hidden group">
-          {/* Animated pattern */}
-          <div className="absolute inset-0 opacity-20">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <pattern id={`grid-${feature.title}`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                <circle cx="5" cy="5" r="0.5" fill="currentColor" />
-              </pattern>
-              <rect width="100" height="100" fill={`url(#grid-${feature.title})`} />
-            </svg>
-          </div>
-
-          {/* Center icon */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className={cn(
-              'w-24 h-24 rounded-2xl flex items-center justify-center transition-all duration-500',
-              `bg-${feature.color}/20 group-hover:bg-${feature.color}/30 group-hover:scale-110`
-            )}>
-              <Icon className={cn('w-12 h-12', `text-${feature.color}`)} />
-            </div>
-          </div>
-
-          {/* Glow effect */}
-          <div className={cn(
-            'absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-            'bg-gradient-to-t from-transparent via-transparent to-white/5'
-          )} />
-        </div>
-      </div>
-
-      {/* Text Side */}
-      <div
-        className={cn(
-          'flex-1 transition-all duration-1000 ease-out-expo',
-          isVisible
-            ? 'opacity-100 translate-x-0'
-            : isReversed
-            ? 'opacity-0 -translate-x-12'
-            : 'opacity-0 translate-x-12'
-        )}
-        style={{ transitionDelay: '200ms' }}
-      >
-        <h3 className="text-3xl md:text-4xl font-semibold mb-4">{feature.title}</h3>
-        <p className="text-lg text-muted-foreground mb-6">{feature.description}</p>
-        <a
-          href="#"
-          className={cn(
-            'inline-flex items-center gap-2 text-sm font-medium transition-colors',
-            `text-${feature.color} hover:text-foreground`
-          )}
-        >
-          Learn more
-          <span className="transition-transform group-hover:translate-x-1">→</span>
-        </a>
-      </div>
-    </div>
-  );
-};
-
-/**
- * OnlineSection Component
- * Demonstrates:
- * - Grid reveal with stagger
- * - Card flip/scale animations
- * - Image parallax within cards
- */
-export const OnlineSection: React.FC = () => {
-  const { ref: titleRef, isVisible: titleVisible } = useScrollAnimation();
-
-  const storeFeatures = [
-    { icon: ShoppingCart, title: "Checkout Optimization", description: "AI-powered checkout that adapts to each customer" },
-    { icon: Globe, title: "Global Markets", description: "Sell internationally with automatic localization" },
-    { icon: Smartphone, title: "Mobile-First Design", description: "Beautiful storefronts optimized for every device" },
-    { icon: CreditCard, title: "Shop Pay", description: "Fastest checkout on the internet" },
-    { icon: Package, title: "Inventory Sync", description: "Real-time inventory across all channels" },
-    { icon: Truck, title: "Smart Shipping", description: "AI-optimized delivery routes and carriers" },
-  ];
-
-  return (
-    <section id="online" className="relative py-32 px-6 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-editions-blue/5 to-background pointer-events-none" />
-
-      <div className="container mx-auto max-w-6xl relative z-10">
-        {/* Header with blur-in effect */}
-        <div
-          ref={titleRef}
-          className={cn(
-            'text-center mb-20 transition-all duration-1000 ease-out-expo',
-            titleVisible ? 'opacity-100 blur-0 translate-y-0' : 'opacity-0 blur-md translate-y-8'
-          )}
-        >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-blue mb-4">Commerce Reimagined</p>
-          <h2 className="text-5xl md:text-7xl font-display mb-6">Online</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            The future of online commerce. Every feature designed to convert visitors into loyal customers.
-          </p>
-        </div>
-
-        {/* Masonry-style grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {storeFeatures.map((feature, index) => (
-            <OnlineFeatureCard
-              key={feature.title}
-              feature={feature}
-              delay={index * 100}
-              size={index === 0 || index === 5 ? 'large' : 'normal'}
+        {/* Experience Timeline */}
+        <div className="space-y-6">
+          {experiences.map((exp, index) => (
+            <ExperienceRow
+              key={exp.title}
+              {...exp}
+              index={index}
+              isVisible={isVisible}
             />
           ))}
         </div>
@@ -228,64 +83,206 @@ export const OnlineSection: React.FC = () => {
   );
 };
 
-interface OnlineFeatureCardProps {
-  feature: {
-    icon: React.ElementType;
-    title: string;
-    description: string;
-  };
-  delay?: number;
-  size?: 'normal' | 'large';
+interface ExperienceRowProps {
+  title: string;
+  company: string;
+  period: string;
+  description: string;
+  icon: React.FC<{ className?: string }>;
+  color: string;
+  index: number;
+  isVisible: boolean;
 }
 
-const OnlineFeatureCard: React.FC<OnlineFeatureCardProps> = ({ feature, delay = 0, size = 'normal' }) => {
-  const { ref, isVisible } = useScrollAnimation({ delay });
-  const Icon = feature.icon;
+const ExperienceRow: React.FC<ExperienceRowProps> = ({
+  title,
+  company,
+  period,
+  description,
+  icon: Icon,
+  color,
+  index,
+  isVisible,
+}) => {
+  const isEven = index % 2 === 0;
 
   return (
     <div
-      ref={ref}
       className={cn(
-        'group relative p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm overflow-hidden',
-        'transition-all duration-700 ease-out-expo cursor-pointer',
-        'hover:border-editions-blue/50 hover:shadow-xl hover:shadow-editions-blue/5',
-        size === 'large' && 'md:col-span-2 lg:col-span-1 lg:row-span-2',
-        isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+        'group flex items-start gap-6 p-6 rounded-2xl transition-all duration-700',
+        'bg-card/30 border border-border/30',
+        `hover:bg-card/50 hover:border-${color}/30`,
+        isVisible
+          ? 'opacity-100 translate-x-0'
+          : isEven
+            ? 'opacity-0 -translate-x-12'
+            : 'opacity-0 translate-x-12'
       )}
+      style={{ transitionDelay: `${index * 150 + 200}ms` }}
     >
-      {/* Hover gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-editions-blue/10 via-transparent to-editions-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      <div className="relative z-10">
-        <div className="w-14 h-14 rounded-xl bg-editions-blue/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-          <Icon className="w-7 h-7 text-editions-blue" />
-        </div>
-
-        <h3 className={cn(
-          'font-semibold mb-3',
-          size === 'large' ? 'text-2xl' : 'text-xl'
-        )}>
-          {feature.title}
-        </h3>
-
-        <p className={cn(
-          'text-muted-foreground',
-          size === 'large' ? 'text-lg' : 'text-base'
-        )}>
-          {feature.description}
-        </p>
-
-        {size === 'large' && (
-          <a href="#" className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-editions-blue hover:text-foreground transition-colors">
-            Explore features →
-          </a>
-        )}
+      <div className={cn(
+        'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-colors',
+        `bg-${color}/10 group-hover:bg-${color}/20`
+      )}>
+        <Icon className={cn('w-6 h-6', `text-${color}`)} />
       </div>
-
-      {/* Animated corner accent */}
-      <div className="absolute top-0 right-0 w-24 h-24 overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 -translate-y-1/2 translate-x-1/2 rounded-full bg-gradient-to-br from-editions-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="flex-1">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <span className="text-sm text-muted-foreground">{period}</span>
+        </div>
+        <p className={cn('mb-2', `text-${color}`)}>{company}</p>
+        <p className="text-muted-foreground text-sm">{description}</p>
       </div>
     </div>
+  );
+};
+
+/**
+ * OnlineSection - Education & Achievements Section
+ * Demonstrates blur-in header and grid reveal animations
+ */
+export const OnlineSection: React.FC = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: gridRef, visibleItems } = useStaggeredAnimation(4, 100);
+
+  const education = [
+    {
+      institution: 'University Institute of Technology, The University of Burdwan',
+      degree: 'B.E. in Computer Science and Engineering',
+      period: '2022 – Present',
+      details: 'CGPA: 8.79/10 (5th Sem)',
+      icon: GraduationCap,
+    },
+    {
+      institution: 'Army Public School, Bengdubi',
+      degree: 'Higher Secondary (CBSE)',
+      period: '2019 – 2021',
+      details: '91.2%',
+      icon: GraduationCap,
+    },
+    {
+      institution: 'Good Shepherd School, Bagdogra',
+      degree: 'Secondary (ICSE)',
+      period: '2006 – 2019',
+      details: '87.2%',
+      icon: GraduationCap,
+    },
+  ];
+
+  const achievements = [
+    {
+      title: 'Best Paper – ICSAA 2025',
+      description: 'Paper on "Savitr-AI: A Novel AI System for Dynamic Delivery Scheduling & Resource Optimization"',
+      icon: Trophy,
+    },
+    {
+      title: 'Outstanding Paper – Ideathon 2025',
+      description: 'Recognized for innovative solution design',
+      icon: Award,
+    },
+    {
+      title: 'Finalist – Smart Bengal Hackathon 2024',
+      description: 'State-level hackathon finalist',
+      icon: Trophy,
+    },
+    {
+      title: '1st Place – QuizWiz 2025',
+      description: 'Technical quiz competition winner',
+      icon: Award,
+    },
+  ];
+
+  return (
+    <section className="relative py-32 px-6 overflow-hidden" id="education">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+            backgroundSize: '32px 32px',
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto max-w-6xl relative z-10">
+        {/* Education Header */}
+        <div
+          ref={headerRef}
+          className={cn(
+            'text-center mb-16 transition-all duration-1000',
+            headerVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
+          )}
+        >
+          <p className="text-sm tracking-[0.3em] uppercase text-editions-green mb-4">
+            <TextScramble text="ACADEMIC BACKGROUND" trigger={headerVisible} speed={40} />
+          </p>
+          <h2 className="text-4xl md:text-6xl font-display">
+            Education & Achievements
+          </h2>
+        </div>
+
+        {/* Education Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {education.map((edu, index) => (
+            <div
+              key={edu.institution}
+              className={cn(
+                'p-6 rounded-2xl bg-card/50 border border-border/50 transition-all duration-700',
+                'hover:border-editions-green/30 hover:shadow-lg',
+                headerVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+              )}
+              style={{ transitionDelay: `${index * 150 + 200}ms` }}
+            >
+              <div className="flex flex-col h-full">
+                <div className="w-12 h-12 rounded-xl bg-editions-green/10 flex items-center justify-center mb-4">
+                  <edu.icon className="w-6 h-6 text-editions-green" />
+                </div>
+                <h3 className="font-semibold mb-1 text-sm">{edu.institution}</h3>
+                <p className="text-editions-purple text-sm mb-1">{edu.degree}</p>
+                <p className="text-muted-foreground text-xs mb-2">{edu.period}</p>
+                <p className="text-editions-gold font-medium mt-auto">{edu.details}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Achievements Header */}
+        <div
+          className={cn(
+            'text-center mb-12 transition-all duration-1000',
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          )}
+          style={{ transitionDelay: '400ms' }}
+        >
+          <h3 className="text-2xl md:text-3xl font-display text-editions-gold">
+            Certifications & Achievements
+          </h3>
+        </div>
+
+        {/* Achievements Grid */}
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        >
+          {achievements.map((achievement, index) => (
+            <div
+              key={achievement.title}
+              className={cn(
+                'p-5 rounded-xl bg-card/30 border border-border/30 transition-all duration-500',
+                'hover:bg-card/50 hover:border-editions-gold/30 hover:-translate-y-1',
+                visibleItems[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              )}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <achievement.icon className="w-8 h-8 text-editions-gold mb-3" />
+              <h4 className="font-medium text-sm mb-2">{achievement.title}</h4>
+              <p className="text-xs text-muted-foreground">{achievement.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
