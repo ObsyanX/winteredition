@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
+import { motion, useInView } from 'framer-motion';
+import { useScrollAnimation, useParallax } from '@/hooks/useScrollAnimation';
 import { TextScramble } from '@/hooks/useTextAnimations';
 import { cn } from '@/lib/utils';
 import { ExternalLink, Github, Eye } from 'lucide-react';
 import { ProjectModal } from './ProjectModal';
+import { ParallaxContainer } from './SectionTransition';
 
 /**
  * ProjectCard Component
- * Demonstrates hover effects, gradient borders, and staggered entrance
+ * Enhanced with 3D tilt effect and gradient animations
  */
 interface Project {
   title: string;
@@ -22,68 +24,116 @@ interface Project {
 
 interface ProjectCardProps {
   project: Project;
-  isVisible: boolean;
-  delay: number;
+  index: number;
+  inView: boolean;
   onViewDetails: () => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
-  isVisible,
-  delay,
+  index,
+  inView,
   onViewDetails,
 }) => {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    setRotation({
+      x: ((y - centerY) / centerY) * -8,
+      y: ((x - centerX) / centerX) * 8,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setRotation({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
+
   return (
-    <div
-      className={cn(
-        'group relative p-6 md:p-8 rounded-2xl transition-all duration-700 cursor-pointer',
-        'bg-gradient-to-b from-card/80 to-card/40',
-        'border border-border/50 hover:border-editions-gold/50',
-        'hover:shadow-2xl hover:shadow-editions-gold/10',
-        'hover:-translate-y-2',
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      )}
-      style={{ transitionDelay: `${delay}ms` }}
+    <motion.div
+      initial={{ opacity: 0, y: 50, rotateX: -10 }}
+      animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 50, rotateX: -10 }}
+      transition={{ 
+        duration: 0.7, 
+        delay: index * 0.15,
+        ease: [0.16, 1, 0.3, 1]
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
       onClick={onViewDetails}
+      className="group relative p-6 md:p-8 rounded-2xl cursor-pointer bg-gradient-to-b from-card/80 to-card/40 border border-border/50"
+      style={{
+        transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.1s ease-out',
+      }}
     >
-      {/* Gradient border effect on hover */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+      {/* Animated gradient border */}
+      <motion.div 
+        className="absolute inset-0 rounded-2xl opacity-0 pointer-events-none"
+        animate={{ opacity: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      >
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-editions-gold via-editions-purple to-editions-blue p-[1px]">
           <div className="w-full h-full rounded-2xl bg-card" />
         </div>
-      </div>
+      </motion.div>
 
-      <div className="relative z-10">
+      {/* Floating glow effect */}
+      <motion.div 
+        className="absolute -inset-1 bg-gradient-to-r from-editions-gold/20 via-editions-purple/20 to-editions-blue/20 rounded-2xl blur-xl -z-10"
+        animate={{ opacity: isHovered ? 0.6 : 0 }}
+        transition={{ duration: 0.4 }}
+      />
+
+      <div className="relative z-10" style={{ transform: 'translateZ(20px)' }}>
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-xl md:text-2xl font-semibold mb-1 group-hover:text-editions-gold transition-colors">
+            <motion.h3 
+              className="text-xl md:text-2xl font-semibold mb-1"
+              animate={{ color: isHovered ? 'hsl(var(--editions-gold))' : 'hsl(var(--foreground))' }}
+              transition={{ duration: 0.3 }}
+            >
               {project.title}
-            </h3>
+            </motion.h3>
             <p className="text-sm text-editions-purple">{project.tech}</p>
           </div>
           <div className="flex gap-2">
             {project.github && (
-              <a
+              <motion.a
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 className="p-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all"
+                whileHover={{ scale: 1.15, rotate: 5 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Github className="w-4 h-4" />
-              </a>
+              </motion.a>
             )}
             {project.live && (
-              <a
+              <motion.a
                 href={project.live}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 className="p-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all"
+                whileHover={{ scale: 1.15, rotate: -5 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <ExternalLink className="w-4 h-4" />
-              </a>
+              </motion.a>
             )}
           </div>
         </div>
@@ -93,40 +143,54 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
         {/* Highlights */}
         <ul className="space-y-2 mb-4">
-          {project.highlights.slice(0, 2).map((highlight, index) => (
-            <li 
-              key={index}
+          {project.highlights.slice(0, 2).map((highlight, idx) => (
+            <motion.li 
+              key={idx}
               className="flex items-start gap-2 text-sm text-muted-foreground"
+              initial={{ opacity: 0, x: -10 }}
+              animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+              transition={{ delay: index * 0.15 + idx * 0.1 + 0.3 }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-editions-green mt-2 flex-shrink-0" />
+              <motion.span 
+                className="w-1.5 h-1.5 rounded-full bg-editions-green mt-2 flex-shrink-0"
+                animate={{ scale: isHovered ? [1, 1.5, 1] : 1 }}
+                transition={{ duration: 0.5, repeat: isHovered ? Infinity : 0 }}
+              />
               <span className="group-hover:text-foreground transition-colors">{highlight}</span>
-            </li>
+            </motion.li>
           ))}
         </ul>
 
         {/* View Details Button */}
-        <button
+        <motion.button
           className="flex items-center gap-2 text-sm text-editions-gold hover:text-foreground transition-colors"
           onClick={onViewDetails}
+          whileHover={{ x: 5 }}
+          transition={{ duration: 0.2 }}
         >
           <Eye className="w-4 h-4" />
           <span>View Details</span>
-        </button>
+          <motion.span
+            animate={{ x: isHovered ? 5 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            →
+          </motion.span>
+        </motion.button>
       </div>
-
-      {/* Floating effect shadow */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-editions-gold/20 via-editions-purple/20 to-editions-blue/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 -z-10" />
-    </div>
+    </motion.div>
   );
 };
 
 /**
  * SidekickSection - Projects Section
- * Portfolio projects with scroll animations
+ * Enhanced with parallax background and staggered card animations
  */
 export const SidekickSection: React.FC = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-  const { ref: gridRef, visibleItems } = useStaggeredAnimation(3, 150);
+  const { offset } = useParallax(0.15);
+  const containerRef = React.useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: '-100px' });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const projects: Project[] = [
@@ -187,8 +251,11 @@ export const SidekickSection: React.FC = () => {
 
   return (
     <section className="relative py-32 px-6 overflow-hidden" id="projects">
-      {/* Background grid pattern */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Parallax grid pattern */}
+      <div 
+        className="absolute inset-0 opacity-5"
+        style={{ transform: `translateY(${offset * 0.5}px)` }}
+      >
         <div
           className="absolute inset-0"
           style={{
@@ -199,14 +266,17 @@ export const SidekickSection: React.FC = () => {
         />
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10">
+      {/* Floating gradient orbs with parallax */}
+      <ParallaxContainer speed={0.25} className="absolute top-20 left-10 w-80 h-80 rounded-full bg-gradient-to-r from-editions-gold/10 to-transparent blur-3xl pointer-events-none" />
+      <ParallaxContainer speed={-0.15} className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-gradient-to-r from-editions-purple/10 to-transparent blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto max-w-6xl relative z-10" ref={containerRef}>
         {/* Header */}
-        <div
-          ref={headerRef}
-          className={cn(
-            'text-center mb-16 transition-all duration-1000 ease-out-expo',
-            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-          )}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
         >
           <p className="text-sm tracking-[0.3em] uppercase text-editions-gold mb-4">
             <TextScramble text="FEATURED WORK" trigger={headerVisible} speed={40} />
@@ -217,19 +287,16 @@ export const SidekickSection: React.FC = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Building scalable solutions with modern technologies and AI integration
           </p>
-        </div>
+        </motion.div>
 
         {/* Projects Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.title}
               project={project}
-              isVisible={visibleItems[index]}
-              delay={index * 150}
+              index={index}
+              inView={inView}
               onViewDetails={() => setSelectedProject(project)}
             />
           ))}
