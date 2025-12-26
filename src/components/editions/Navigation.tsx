@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useScrollDirection, useScrollProgress } from '@/hooks/useScrollAnimation';
 import { cn } from '@/lib/utils';
-import { Menu, X, Download } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import avatarLogo from '@/assets/avatar-logo.png';
+import { ResumeGenerator } from './ResumeGenerator';
 
 /**
  * Navigation Component - Portfolio Version
@@ -87,16 +88,8 @@ export const Navigation: React.FC = () => {
 
             {/* Right side actions */}
             <div className="flex items-center gap-4">
-              {/* Resume Button */}
-              <a
-                href="#"
-                className="hidden sm:flex items-center gap-2 relative overflow-hidden px-5 py-2.5 text-sm font-medium bg-foreground text-background rounded-full group"
-              >
-                <Download className="w-4 h-4 relative z-10" />
-                <span className="relative z-10">Resume</span>
-                {/* Hover effect */}
-                <div className="absolute inset-0 bg-editions-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </a>
+              {/* Resume Button - PDF Generator */}
+              <ResumeGenerator className="hidden sm:flex" />
 
               {/* Mobile menu toggle */}
               <button
@@ -141,19 +134,17 @@ export const Navigation: React.FC = () => {
             </a>
           ))}
 
-          <a
-            href="#"
+          <div
             className={cn(
-              'mt-8 flex items-center gap-2 px-8 py-4 text-lg font-medium bg-foreground text-background rounded-full transition-all duration-500',
+              'mt-8 transition-all duration-500',
               isMobileMenuOpen
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-8'
             )}
             style={{ transitionDelay: '700ms' }}
           >
-            <Download className="w-5 h-5" />
-            Resume
-          </a>
+            <ResumeGenerator className="px-8 py-4 text-lg" />
+          </div>
         </div>
       </div>
     </>

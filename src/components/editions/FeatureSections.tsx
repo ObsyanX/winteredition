@@ -1,16 +1,20 @@
 import React from 'react';
+import { motion, useInView } from 'framer-motion';
 import { useScrollAnimation, useParallax, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 import { TextScramble } from '@/hooks/useTextAnimations';
 import { cn } from '@/lib/utils';
 import { Award, Briefcase, GraduationCap, Trophy, Users } from 'lucide-react';
+import { FloatingElement, ParallaxContainer } from './SectionTransition';
 
 /**
  * AgenticSection - Experience Section
- * Demonstrates parallax background and alternating fade-in animations
+ * Enhanced with smooth parallax background and card hover animations
  */
 export const AgenticSection: React.FC = () => {
   const { ref: sectionRef, isVisible } = useScrollAnimation();
   const { offset } = useParallax(0.2);
+  const containerRef = React.useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: '-100px' });
 
   const experiences = [
     {
@@ -41,23 +45,34 @@ export const AgenticSection: React.FC = () => {
 
   return (
     <section className="relative py-32 px-6 overflow-hidden" id="experience">
-      {/* Parallax background */}
+      {/* Parallax floating orbs */}
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{ transform: `translateY(${offset}px)` }}
       >
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-editions-gold to-editions-purple blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-editions-blue to-editions-green blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-r from-editions-gold/10 to-editions-purple/5 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-editions-blue/10 to-editions-green/5 blur-3xl" />
       </div>
 
-      <div className="container mx-auto max-w-5xl relative z-10">
+      {/* Animated grid pattern */}
+      <ParallaxContainer speed={0.1} className="absolute inset-0 opacity-[0.02]">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
+                             linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
+            backgroundSize: '80px 80px',
+          }}
+        />
+      </ParallaxContainer>
+
+      <div className="container mx-auto max-w-5xl relative z-10" ref={containerRef}>
         {/* Header */}
-        <div
-          ref={sectionRef}
-          className={cn(
-            'text-center mb-16 transition-all duration-1000',
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-          )}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
         >
           <p className="text-sm tracking-[0.3em] uppercase text-editions-blue mb-4">
             <TextScramble text="PROFESSIONAL JOURNEY" trigger={isVisible} speed={40} />
@@ -65,7 +80,7 @@ export const AgenticSection: React.FC = () => {
           <h2 className="text-4xl md:text-6xl font-display">
             Experience
           </h2>
-        </div>
+        </motion.div>
 
         {/* Experience Timeline */}
         <div className="space-y-6">
@@ -74,7 +89,7 @@ export const AgenticSection: React.FC = () => {
               key={exp.title}
               {...exp}
               index={index}
-              isVisible={isVisible}
+              inView={inView}
             />
           ))}
         </div>
@@ -91,7 +106,7 @@ interface ExperienceRowProps {
   icon: React.FC<{ className?: string }>;
   color: string;
   index: number;
-  isVisible: boolean;
+  inView: boolean;
 }
 
 const ExperienceRow: React.FC<ExperienceRowProps> = ({
@@ -102,49 +117,105 @@ const ExperienceRow: React.FC<ExperienceRowProps> = ({
   icon: Icon,
   color,
   index,
-  isVisible,
+  inView,
 }) => {
   const isEven = index % 2 === 0;
 
   return (
-    <div
+    <motion.div
+      initial={{ 
+        opacity: 0, 
+        x: isEven ? -60 : 60,
+        rotateY: isEven ? -5 : 5
+      }}
+      animate={inView ? { 
+        opacity: 1, 
+        x: 0,
+        rotateY: 0
+      } : { 
+        opacity: 0, 
+        x: isEven ? -60 : 60,
+        rotateY: isEven ? -5 : 5
+      }}
+      transition={{ 
+        duration: 0.7, 
+        delay: index * 0.15 + 0.2,
+        ease: [0.16, 1, 0.3, 1]
+      }}
+      whileHover={{ 
+        y: -4,
+        scale: 1.02,
+        boxShadow: `0 20px 40px rgba(0,0,0,0.2), 0 0 30px hsl(var(--${color}) / 0.1)`,
+        transition: { duration: 0.3 }
+      }}
       className={cn(
-        'group flex items-start gap-6 p-6 rounded-2xl transition-all duration-700',
-        'bg-card/30 border border-border/30',
-        `hover:bg-card/50 hover:border-${color}/30`,
-        isVisible
-          ? 'opacity-100 translate-x-0'
-          : isEven
-            ? 'opacity-0 -translate-x-12'
-            : 'opacity-0 translate-x-12'
+        'group flex items-start gap-6 p-6 rounded-2xl cursor-default',
+        'bg-card/30 border border-border/30 backdrop-blur-sm',
+        'hover:bg-card/50 relative overflow-hidden'
       )}
-      style={{ transitionDelay: `${index * 150 + 200}ms` }}
     >
-      <div className={cn(
-        'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-colors',
-        `bg-${color}/10 group-hover:bg-${color}/20`
-      )}>
+      {/* Animated background gradient on hover */}
+      <motion.div 
+        className={cn(
+          'absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
+          `bg-gradient-to-r from-${color}/5 via-transparent to-${color}/5`
+        )}
+      />
+
+      {/* Animated icon container */}
+      <motion.div 
+        className={cn(
+          'flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center relative z-10',
+          `bg-${color}/10`
+        )}
+        whileHover={{ 
+          scale: 1.15, 
+          rotate: 5,
+          transition: { duration: 0.3 }
+        }}
+      >
         <Icon className={cn('w-6 h-6', `text-${color}`)} />
-      </div>
-      <div className="flex-1">
+      </motion.div>
+      
+      <div className="flex-1 relative z-10">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <span className="text-sm text-muted-foreground">{period}</span>
+          <h3 className="text-lg font-semibold group-hover:text-editions-gold transition-colors">
+            {title}
+          </h3>
+          <motion.span 
+            className="text-sm text-muted-foreground"
+            whileHover={{ color: 'hsl(var(--foreground))' }}
+          >
+            {period}
+          </motion.span>
         </div>
-        <p className={cn('mb-2', `text-${color}`)}>{company}</p>
-        <p className="text-muted-foreground text-sm">{description}</p>
+        <p className={cn('mb-2 transition-colors', `text-${color}`)}>{company}</p>
+        <p className="text-muted-foreground text-sm group-hover:text-foreground/70 transition-colors">
+          {description}
+        </p>
       </div>
-    </div>
+
+      {/* Animated border line */}
+      <motion.div 
+        className={cn('absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl', `bg-${color}/30`)}
+        initial={{ scaleY: 0 }}
+        animate={inView ? { scaleY: 1 } : { scaleY: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.15 + 0.4 }}
+        style={{ transformOrigin: 'top' }}
+      />
+    </motion.div>
   );
 };
 
 /**
  * OnlineSection - Education & Achievements Section
- * Demonstrates blur-in header and grid reveal animations
+ * Enhanced with staggered animations and 3D card effects
  */
 export const OnlineSection: React.FC = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-  const { ref: gridRef, visibleItems } = useStaggeredAnimation(4, 100);
+  const { offset } = useParallax(0.15);
+  const containerRef = React.useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: '-50px' });
 
   const education = [
     {
@@ -195,8 +266,11 @@ export const OnlineSection: React.FC = () => {
 
   return (
     <section className="relative py-32 px-6 overflow-hidden" id="education">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Parallax background pattern */}
+      <div 
+        className="absolute inset-0 opacity-5"
+        style={{ transform: `translateY(${offset * 0.5}px)` }}
+      >
         <div
           className="absolute inset-0"
           style={{
@@ -206,14 +280,18 @@ export const OnlineSection: React.FC = () => {
         />
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10">
+      {/* Floating decorative elements */}
+      <FloatingElement amplitude={15} duration={5} className="absolute top-20 right-20 w-3 h-3 rounded-full bg-editions-gold/30" />
+      <FloatingElement amplitude={20} duration={6} className="absolute bottom-40 left-20 w-4 h-4 rounded-full bg-editions-purple/30" />
+      <FloatingElement amplitude={12} duration={4} className="absolute top-1/2 right-1/3 w-2 h-2 rounded-full bg-editions-blue/30" />
+
+      <div className="container mx-auto max-w-6xl relative z-10" ref={containerRef}>
         {/* Education Header */}
-        <div
-          ref={headerRef}
-          className={cn(
-            'text-center mb-16 transition-all duration-1000',
-            headerVisible ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'
-          )}
+        <motion.div
+          initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
+          animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 50, filter: 'blur(10px)' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
         >
           <p className="text-sm tracking-[0.3em] uppercase text-editions-green mb-4">
             <TextScramble text="ACADEMIC BACKGROUND" trigger={headerVisible} speed={40} />
@@ -221,65 +299,111 @@ export const OnlineSection: React.FC = () => {
           <h2 className="text-4xl md:text-6xl font-display">
             Education & Achievements
           </h2>
-        </div>
+        </motion.div>
 
         {/* Education Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {education.map((edu, index) => (
-            <div
+            <motion.div
               key={edu.institution}
-              className={cn(
-                'p-6 rounded-2xl bg-card/50 border border-border/50 transition-all duration-700',
-                'hover:border-editions-green/30 hover:shadow-lg',
-                headerVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
-              )}
-              style={{ transitionDelay: `${index * 150 + 200}ms` }}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.95 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.15 + 0.2,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              whileHover={{ 
+                y: -8,
+                scale: 1.03,
+                rotateX: -5,
+                boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
+                transition: { duration: 0.3 }
+              }}
+              className="p-6 rounded-2xl bg-card/50 border border-border/50 hover:border-editions-green/30 relative group cursor-default"
+              style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
             >
-              <div className="flex flex-col h-full">
-                <div className="w-12 h-12 rounded-xl bg-editions-green/10 flex items-center justify-center mb-4">
+              {/* Shimmer effect on hover */}
+              <motion.div 
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+                style={{
+                  background: 'linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%)',
+                  backgroundSize: '200% 200%',
+                }}
+                animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              
+              <div className="flex flex-col h-full relative z-10">
+                <motion.div 
+                  className="w-12 h-12 rounded-xl bg-editions-green/10 flex items-center justify-center mb-4"
+                  whileHover={{ rotate: 10, scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <edu.icon className="w-6 h-6 text-editions-green" />
-                </div>
-                <h3 className="font-semibold mb-1 text-sm">{edu.institution}</h3>
+                </motion.div>
+                <h3 className="font-semibold mb-1 text-sm group-hover:text-editions-green transition-colors">
+                  {edu.institution}
+                </h3>
                 <p className="text-editions-purple text-sm mb-1">{edu.degree}</p>
                 <p className="text-muted-foreground text-xs mb-2">{edu.period}</p>
-                <p className="text-editions-gold font-medium mt-auto">{edu.details}</p>
+                <motion.p 
+                  className="text-editions-gold font-medium mt-auto"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {edu.details}
+                </motion.p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Achievements Header */}
-        <div
-          className={cn(
-            'text-center mb-12 transition-all duration-1000',
-            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          )}
-          style={{ transitionDelay: '400ms' }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center mb-12"
         >
           <h3 className="text-2xl md:text-3xl font-display text-editions-gold">
             Certifications & Achievements
           </h3>
-        </div>
+        </motion.div>
 
         {/* Achievements Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {achievements.map((achievement, index) => (
-            <div
+            <motion.div
               key={achievement.title}
-              className={cn(
-                'p-5 rounded-xl bg-card/30 border border-border/30 transition-all duration-500',
-                'hover:bg-card/50 hover:border-editions-gold/30 hover:-translate-y-1',
-                visibleItems[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              )}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              initial={{ opacity: 0, y: 30, rotateZ: index % 2 === 0 ? -2 : 2 }}
+              animate={inView ? { opacity: 1, y: 0, rotateZ: 0 } : { opacity: 0, y: 30, rotateZ: index % 2 === 0 ? -2 : 2 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: index * 0.1 + 0.5,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              whileHover={{ 
+                y: -6,
+                scale: 1.05,
+                boxShadow: '0 20px 40px rgba(180,140,60,0.15)',
+                transition: { duration: 0.25 }
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="p-5 rounded-xl bg-card/30 border border-border/30 hover:bg-card/50 hover:border-editions-gold/30 group cursor-default"
             >
-              <achievement.icon className="w-8 h-8 text-editions-gold mb-3" />
-              <h4 className="font-medium text-sm mb-2">{achievement.title}</h4>
-              <p className="text-xs text-muted-foreground">{achievement.description}</p>
-            </div>
+              <motion.div
+                whileHover={{ rotate: [0, -10, 10, 0], scale: 1.2 }}
+                transition={{ duration: 0.5 }}
+              >
+                <achievement.icon className="w-8 h-8 text-editions-gold mb-3" />
+              </motion.div>
+              <h4 className="font-medium text-sm mb-2 group-hover:text-editions-gold transition-colors">
+                {achievement.title}
+              </h4>
+              <p className="text-xs text-muted-foreground group-hover:text-foreground/70 transition-colors">
+                {achievement.description}
+              </p>
+            </motion.div>
           ))}
         </div>
       </div>
