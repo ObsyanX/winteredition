@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import avatarLogo from '@/assets/avatar-logo.png';
 import { ResumeGenerator } from './ResumeGenerator';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 /**
  * Navigation Component - Portfolio Version
@@ -87,7 +88,10 @@ export const Navigation: React.FC = () => {
             </div>
 
             {/* Right side actions */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              {/* Theme Toggle */}
+              <ThemeToggle className="hidden sm:flex" />
+              
               {/* Resume Button - PDF Generator */}
               <ResumeGenerator className="hidden sm:flex" />
 
