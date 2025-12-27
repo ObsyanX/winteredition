@@ -103,7 +103,6 @@ export const StatsSection: React.FC = () => {
  * Enhanced with parallax background and card hover effects
  */
 export const SkillsShowcase: React.FC = () => {
-  const { ref: sectionRef, isVisible } = useScrollAnimation();
   const { offset } = useParallax(0.2);
   const containerRef = React.useRef(null);
   const inView = useInView(containerRef, { once: true, margin: '-50px' });
@@ -160,14 +159,14 @@ export const SkillsShowcase: React.FC = () => {
           className="text-center"
         >
           <p className="text-sm tracking-[0.3em] uppercase text-editions-green mb-4">
-            <TextScramble text="TECHNICAL PROFICIENCY" trigger={isVisible} speed={40} />
+            <TextScramble text="TECHNICAL PROFICIENCY" trigger={inView} speed={40} />
           </p>
 
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-display mb-12">
             <Typewriter 
               text="Skills & Expertise" 
               speed={60} 
-              trigger={isVisible}
+              trigger={inView}
               cursorClassName="text-editions-gold"
             />
           </h2>
