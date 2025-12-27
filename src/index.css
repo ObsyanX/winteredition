@@ -56,6 +56,54 @@
     --sidebar-border: 0 0% 20%;
     --sidebar-ring: 0 0% 100%;
   }
+
+  /* Light theme */
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 5%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
+
+    --primary: 0 0% 5%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 0 0% 15%;
+
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 45 100% 50%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 0 0% 5%;
+
+    /* Custom colors for light theme */
+    --editions-gold: 45 80% 45%;
+    --editions-purple: 270 60% 45%;
+    --editions-blue: 210 100% 50%;
+    --editions-green: 150 60% 35%;
+    --editions-gray: 0 0% 60%;
+    --editions-dark-gray: 0 0% 92%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 0 0% 5%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 15%;
+    --sidebar-border: 0 0% 85%;
+    --sidebar-ring: 0 0% 5%;
+  }
 }
 
 @layer base {
@@ -626,6 +674,102 @@
 /* Smooth scroll for hash links */
 html {
   scroll-behavior: smooth;
+}
+
+/* Theme transition */
+.theme-transitioning,
+.theme-transitioning * {
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              fill 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              stroke 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Marquee animation for tech stack */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Micro-interactions */
+.micro-bounce:active {
+  transform: scale(0.95);
+}
+
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Button fill effect */
+.btn-fill {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--editions-gold));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.btn-fill:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Card 3D tilt glow */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Cursor trail effect */
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: hsl(var(--editions-gold) / 0.5);
+  mix-blend-mode: difference;
+  z-index: 9999;
 }
 
 @media (prefers-reduced-motion: reduce) {
