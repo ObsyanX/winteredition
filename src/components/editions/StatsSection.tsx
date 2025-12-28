@@ -23,7 +23,7 @@ export const StatsSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-24 px-6 border-y border-border/50 bg-background overflow-hidden z-20">
+    <section className="relative py-24 px-6 border-y border-border/50 bg-card/30 overflow-hidden mt-0 z-10">
       {/* Parallax background elements */}
       <div 
         className="absolute inset-0 pointer-events-none"
@@ -135,7 +135,7 @@ export const SkillsShowcase: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden bg-background z-20" id="skills">
+    <section className="relative py-32 px-6 overflow-hidden" id="skills">
       {/* Parallax dot pattern */}
       <div 
         className="absolute inset-0 opacity-5"

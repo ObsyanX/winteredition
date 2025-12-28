@@ -16,16 +16,16 @@ const Index: React.FC = () => {
       <GeometricBackground />
       <Navigation />
 
-      <main className="snap-y snap-proximity relative">
-        <div className="snap-start relative z-0">
+      <main className="snap-y snap-proximity">
+        <div className="snap-start">
           <HeroSection />
         </div>
 
-        <div className="snap-start relative z-10">
+        <div className="snap-start relative z-10 bg-background">
           <StatsSection />
         </div>
 
-        <div className="snap-start relative z-10 mt-0">
+        <div className="snap-start">
           <SkillsShowcase />
         </div>
 
