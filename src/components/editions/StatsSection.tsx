@@ -23,7 +23,7 @@ export const StatsSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-24 px-6 border-y border-border/50 bg-card/30 overflow-hidden">
+    <section className="relative py-24 px-6 border-y border-border/50 bg-card/30 overflow-hidden mt-0 z-10">
       {/* Parallax background elements */}
       <div 
         className="absolute inset-0 pointer-events-none"

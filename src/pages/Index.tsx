@@ -21,7 +21,7 @@ const Index: React.FC = () => {
           <HeroSection />
         </div>
 
-        <div className="snap-start">
+        <div className="snap-start relative z-10 bg-background">
           <StatsSection />
         </div>
 
