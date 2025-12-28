@@ -8,8 +8,10 @@ import { StatsSection, SkillsShowcase } from '@/components/editions/StatsSection
 import { TechStackSection } from '@/components/editions/TechStackSection';
 import { Footer } from '@/components/editions/Footer';
 import { CustomCursor } from '@/components/editions/CustomCursor';
+
 const Index: React.FC = () => {
-  return <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+  return (
+    <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       <CustomCursor />
       <GeometricBackground />
       <Navigation />
@@ -19,9 +21,11 @@ const Index: React.FC = () => {
           <HeroSection />
         </div>
 
-        
+        <div className="snap-start relative z-10">
+          <StatsSection />
+        </div>
 
-        <div className="snap-start relative z-10 mt-0 my-[18px]">
+        <div className="snap-start relative z-10 mt-0">
           <SkillsShowcase />
         </div>
 
@@ -46,6 +50,8 @@ const Index: React.FC = () => {
           <Footer />
         </div>
       </main>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
