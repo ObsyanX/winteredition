@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation, useParallax } from '@/hooks/useScrollAnimation';
 import { TextScramble } from '@/hooks/useTextAnimations';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,8 @@ import { ParallaxContainer } from './SectionTransition';
  * ProjectCard Component
  * Enhanced with 3D tilt effect and gradient animations
  */
+type ProjectCategory = 'all' | 'fullstack' | 'frontend' | 'data';
+
 interface Project {
   title: string;
   tech: string;
@@ -20,6 +22,7 @@ interface Project {
   live?: string;
   images?: string[];
   fullDescription?: string;
+  category: ProjectCategory;
 }
 
 interface ProjectCardProps {
@@ -192,6 +195,14 @@ export const SidekickSection: React.FC = () => {
   const containerRef = React.useRef(null);
   const inView = useInView(containerRef, { once: true, margin: '-100px' });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeFilter, setActiveFilter] = useState<ProjectCategory>('all');
+
+  const filters: { label: string; value: ProjectCategory }[] = [
+    { label: 'All', value: 'all' },
+    { label: 'Full-Stack', value: 'fullstack' },
+    { label: 'Frontend', value: 'frontend' },
+    { label: 'Data', value: 'data' },
+  ];
 
   const projects: Project[] = [
     {
@@ -211,6 +222,7 @@ export const SidekickSection: React.FC = () => {
         'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=450&fit=crop',
         'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop',
       ],
+      category: 'fullstack',
     },
     {
       title: 'Cyberpunk AI Chatbot',
@@ -229,6 +241,7 @@ export const SidekickSection: React.FC = () => {
         'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop',
         'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=450&fit=crop',
       ],
+      category: 'frontend',
     },
     {
       title: 'Road Safety Dashboard',
@@ -246,8 +259,14 @@ export const SidekickSection: React.FC = () => {
         'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop',
         'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop',
       ],
+      category: 'data',
     },
   ];
+
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === 'all') return projects;
+    return projects.filter(p => p.category === activeFilter);
+  }, [activeFilter]);
 
   return (
     <section className="relative py-32 px-6 overflow-hidden" id="projects">
@@ -289,18 +308,57 @@ export const SidekickSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              index={index}
-              inView={inView}
-              onViewDetails={() => setSelectedProject(project)}
-            />
+        {/* Filter Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-3 mb-12"
+        >
+          {filters.map((filter) => (
+            <motion.button
+              key={filter.value}
+              onClick={() => setActiveFilter(filter.value)}
+              className={cn(
+                "px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border",
+                activeFilter === filter.value
+                  ? "bg-editions-gold text-background border-editions-gold"
+                  : "bg-transparent text-muted-foreground border-border/50 hover:border-foreground hover:text-foreground"
+              )}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-pressed={activeFilter === filter.value}
+            >
+              {filter.label}
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
+
+        {/* Projects Grid */}
+        <motion.div 
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  inView={inView}
+                  onViewDetails={() => setSelectedProject(project)}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
       {/* Project Modal */}
