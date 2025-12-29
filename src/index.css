@@ -57,52 +57,52 @@
     --sidebar-ring: 0 0% 100%;
   }
 
-  /* Light theme */
+  /* Light theme - Professional, vibrant & minimalistic */
   .light {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 5%;
+    --background: 40 20% 97%;
+    --foreground: 220 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
+    --card-foreground: 220 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover-foreground: 220 15% 15%;
 
-    --primary: 0 0% 5%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 220 15% 15%;
+    --primary-foreground: 40 20% 97%;
 
-    --secondary: 0 0% 94%;
-    --secondary-foreground: 0 0% 15%;
+    --secondary: 40 10% 92%;
+    --secondary-foreground: 220 15% 20%;
 
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 40 10% 88%;
+    --muted-foreground: 220 10% 40%;
 
-    --accent: 45 100% 50%;
-    --accent-foreground: 0 0% 5%;
+    --accent: 38 95% 50%;
+    --accent-foreground: 220 15% 10%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
-    --ring: 0 0% 5%;
+    --border: 40 10% 82%;
+    --input: 40 10% 85%;
+    --ring: 38 95% 50%;
 
-    /* Custom colors for light theme */
-    --editions-gold: 45 80% 45%;
-    --editions-purple: 270 60% 45%;
-    --editions-blue: 210 100% 50%;
-    --editions-green: 150 60% 35%;
-    --editions-gray: 0 0% 60%;
-    --editions-dark-gray: 0 0% 92%;
+    /* Custom colors for light theme - vibrant & accessible */
+    --editions-gold: 38 95% 42%;
+    --editions-purple: 265 70% 50%;
+    --editions-blue: 210 100% 45%;
+    --editions-green: 160 70% 35%;
+    --editions-gray: 220 10% 50%;
+    --editions-dark-gray: 40 10% 94%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 5%;
-    --sidebar-primary: 0 0% 5%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 0 0% 94%;
-    --sidebar-accent-foreground: 0 0% 15%;
-    --sidebar-border: 0 0% 85%;
-    --sidebar-ring: 0 0% 5%;
+    --sidebar-background: 40 20% 97%;
+    --sidebar-foreground: 220 15% 15%;
+    --sidebar-primary: 220 15% 15%;
+    --sidebar-primary-foreground: 40 20% 97%;
+    --sidebar-accent: 40 10% 92%;
+    --sidebar-accent-foreground: 220 15% 20%;
+    --sidebar-border: 40 10% 82%;
+    --sidebar-ring: 38 95% 50%;
   }
 }
 
@@ -431,7 +431,7 @@
     transition: transform 0.05s linear;
   }
 
-  /* Hover effects */
+  /* Hover effects - theme aware */
   .hover-lift {
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -439,15 +439,26 @@
 
   .hover-lift:hover {
     transform: translateY(-8px);
+  }
+
+  :root .hover-lift:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .light .hover-lift:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   }
 
   .hover-glow {
     transition: box-shadow 0.3s ease;
   }
 
-  .hover-glow:hover {
+  :root .hover-glow:hover {
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+
+  .light .hover-glow:hover {
+    box-shadow: 0 0 30px hsl(38 95% 50% / 0.15);
   }
 
   /* Text gradient animation */
@@ -676,14 +687,17 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Theme transition */
+/* Theme transition - smooth color changes */
 .theme-transitioning,
-.theme-transitioning * {
-  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              fill 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              stroke 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 0.4s ease-in-out,
+              color 0.4s ease-in-out,
+              border-color 0.4s ease-in-out,
+              fill 0.4s ease-in-out,
+              stroke 0.4s ease-in-out,
+              box-shadow 0.4s ease-in-out !important;
 }
 
 /* Marquee animation for tech stack */

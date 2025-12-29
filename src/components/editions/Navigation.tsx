@@ -139,14 +139,27 @@ export const Navigation: React.FC = () => {
             </a>
           ))}
 
+          {/* Theme Toggle in Mobile Menu */}
           <div
             className={cn(
-              'mt-8 transition-all duration-500',
+              'mt-6 transition-all duration-500',
               isMobileMenuOpen
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-8'
             )}
-            style={{ transitionDelay: '700ms' }}
+            style={{ transitionDelay: '650ms' }}
+          >
+            <ThemeToggle />
+          </div>
+
+          <div
+            className={cn(
+              'mt-4 transition-all duration-500',
+              isMobileMenuOpen
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            )}
+            style={{ transitionDelay: '750ms' }}
           >
             <ResumeGenerator className="px-8 py-4 text-lg" />
           </div>
