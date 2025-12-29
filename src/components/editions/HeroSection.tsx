@@ -38,7 +38,7 @@ export const HeroSection: React.FC = () => {
   return (
     <section
       ref={parallaxRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start pb-24"
       style={{
         opacity: heroOpacity,
         transform: `scale(${heroScale}) translateY(${offset}px)`,

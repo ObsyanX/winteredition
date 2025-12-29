@@ -48,26 +48,31 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     
-    // Simulate API call (replace with actual backend integration)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Create mailto link as fallback
-    const mailtoLink = `mailto:duttasayan835@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(`From: ${data.name} (${data.email})\n\n${data.message}`)}`;
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    toast.success('Message prepared! Opening email client...', {
-      description: 'Your message has been composed.',
-    });
-    
-    // Open mailto link
-    window.location.href = mailtoLink;
-    
-    setTimeout(() => {
-      setIsSuccess(false);
-      reset();
-    }, 3000);
+    try {
+      // Create mailto link with properly encoded data
+      const mailtoLink = `mailto:duttasayan835@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(`From: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`)}`;
+      
+      // Open email client
+      window.open(mailtoLink, '_blank');
+      
+      setIsSuccess(true);
+      
+      toast.success('Email client opened!', {
+        description: 'Please send the email from your email application.',
+      });
+      
+      // Reset form after delay
+      setTimeout(() => {
+        setIsSuccess(false);
+        reset();
+      }, 3000);
+    } catch (error) {
+      toast.error('Failed to open email client', {
+        description: 'Please try again or email directly at duttasayan835@gmail.com',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClasses = cn(

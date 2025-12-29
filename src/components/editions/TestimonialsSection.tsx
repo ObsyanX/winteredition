@@ -69,7 +69,7 @@ export const TestimonialsSection: React.FC = () => {
 
   return (
     <section 
-      className="relative py-32 px-6 overflow-hidden" 
+      className="relative py-32 px-6 overflow-hidden mt-16" 
       id="testimonials" 
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
