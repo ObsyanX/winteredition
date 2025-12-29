@@ -29,7 +29,7 @@ export const AboutSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="about" ref={containerRef}>
+    <section className="relative py-32 px-6 overflow-hidden mt-16" id="about" ref={containerRef}>
       {/* Parallax background elements */}
       <motion.div
         className="absolute top-20 right-10 w-96 h-96 rounded-full bg-gradient-to-r from-editions-purple/10 to-transparent blur-3xl pointer-events-none"

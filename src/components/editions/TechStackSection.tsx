@@ -49,7 +49,7 @@ export const TechStackSection: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative py-32 overflow-hidden bg-gradient-to-b from-background via-card/20 to-background"
+      className="relative py-32 overflow-hidden bg-gradient-to-b from-background via-card/20 to-background mt-16"
       id="tech"
     >
       {/* Background parallax elements */}

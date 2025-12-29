@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative border-t border-border bg-card/30" id="contact">
+    <footer className="relative border-t border-border bg-card/30 mt-16" id="contact">
       <div ref={ref} className="container mx-auto max-w-6xl px-6 py-20">
         <div className="grid lg:grid-cols-2 gap-16">
           <div className={cn(

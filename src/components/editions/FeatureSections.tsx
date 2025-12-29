@@ -44,7 +44,7 @@ export const AgenticSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="experience">
+    <section className="relative py-32 px-6 overflow-hidden mt-16" id="experience">
       {/* Parallax floating orbs */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -265,7 +265,7 @@ export const OnlineSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="education">
+    <section className="relative py-32 px-6 overflow-hidden mt-16" id="education">
       {/* Parallax background pattern */}
       <div 
         className="absolute inset-0 opacity-5"

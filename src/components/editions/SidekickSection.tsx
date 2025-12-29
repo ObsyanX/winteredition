@@ -7,6 +7,10 @@ import { ExternalLink, Github, Eye } from 'lucide-react';
 import { ProjectModal } from './ProjectModal';
 import { ParallaxContainer } from './SectionTransition';
 
+// Import project screenshots
+import savitrAiImage from '@/assets/project-savitr-ai.jpg';
+import cyberpunkChatbotImage from '@/assets/project-cyberpunk-chatbot.jpg';
+import roadSafetyImage from '@/assets/project-road-safety.jpg';
 /**
  * ProjectCard Component
  * Enhanced with 3D tilt effect and gradient animations
@@ -218,10 +222,7 @@ export const SidekickSection: React.FC = () => {
       ],
       github: 'https://github.com/sayandutta',
       live: '#',
-      images: [
-        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=450&fit=crop',
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop',
-      ],
+      images: [savitrAiImage],
       category: 'fullstack',
     },
     {
@@ -237,10 +238,7 @@ export const SidekickSection: React.FC = () => {
       ],
       github: 'https://github.com/sayandutta',
       live: '#',
-      images: [
-        'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=450&fit=crop',
-        'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=450&fit=crop',
-      ],
+      images: [cyberpunkChatbotImage],
       category: 'frontend',
     },
     {
@@ -255,10 +253,7 @@ export const SidekickSection: React.FC = () => {
         'Created interactive dashboards for stakeholder presentations',
       ],
       github: 'https://github.com/sayandutta',
-      images: [
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=450&fit=crop',
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=450&fit=crop',
-      ],
+      images: [roadSafetyImage],
       category: 'data',
     },
   ];
@@ -269,7 +264,7 @@ export const SidekickSection: React.FC = () => {
   }, [activeFilter]);
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="projects">
+    <section className="relative py-32 px-6 overflow-hidden mt-16" id="projects">
       {/* Parallax grid pattern */}
       <div 
         className="absolute inset-0 opacity-5"
