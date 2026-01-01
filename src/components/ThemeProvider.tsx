@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
 type Theme = 'dark' | 'light';
 
@@ -31,6 +31,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  const toggleTheme = useCallback(() => {
+    setIsTransitioning(true);
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
     
@@ -50,10 +55,18 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return () => clearTimeout(timeout);
   }, [theme, isTransitioning]);
 
-  const toggleTheme = () => {
-    setIsTransitioning(true);
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
+  // Keyboard shortcut: Ctrl/Cmd + D to toggle theme
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
