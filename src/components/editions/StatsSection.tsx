@@ -1,76 +1,47 @@
 import React from 'react';
 import { motion, useInView } from 'framer-motion';
-import { useScrollAnimation, useParallax } from '@/hooks/useScrollAnimation';
-import { CountUp, TextScramble, Typewriter } from '@/hooks/useTextAnimations';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { fadeUp, fadeOnly, staggerContainer, staggerContainerSmall, scaleIn } from '@/lib/motion';
+import { CountUp, TextScramble } from '@/hooks/useTextAnimations';
 import { cn } from '@/lib/utils';
-import { HoverCard, FloatingElement, ParallaxContainer } from './SectionTransition';
 
 /**
- * StatsSection Component - Portfolio Version
- * Demonstrates counting number animations with enhanced parallax and hover effects
+ * StatsSection Component
+ * Clean counting animations with consistent motion variants
  */
 export const StatsSection: React.FC = () => {
   const { ref, isVisible } = useScrollAnimation();
-  const { offset } = useParallax(0.15);
   const containerRef = React.useRef(null);
   const inView = useInView(containerRef, { once: true, margin: '-100px' });
+  const prefersReducedMotion = useReducedMotion();
 
   const stats = [
-    { value: 8.79, suffix: '', label: 'CGPA', decimals: 2, icon: '📊' },
-    { value: 3, suffix: '+', label: 'Projects', decimals: 0, icon: '🚀' },
-    { value: 2, suffix: '', label: 'Internships', decimals: 0, icon: '💼' },
-    { value: 4, suffix: '', label: 'Awards', decimals: 0, icon: '🏆' },
+    { value: 8.79, suffix: '', label: 'CGPA', decimals: 2 },
+    { value: 3, suffix: '+', label: 'Projects', decimals: 0 },
+    { value: 2, suffix: '', label: 'Internships', decimals: 0 },
+    { value: 4, suffix: '', label: 'Awards', decimals: 0 },
   ];
 
-  return (
-    <section className="relative py-24 px-6 border-y border-border/50 bg-card/30 overflow-hidden mt-24 z-10">
-      {/* Parallax background elements */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{ transform: `translateY(${offset}px)` }}
-      >
-        <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-editions-gold/10 to-transparent blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-48 h-48 rounded-full bg-gradient-to-r from-editions-purple/10 to-transparent blur-3xl" />
-      </div>
+  const getFadeUp = () => prefersReducedMotion ? fadeOnly : fadeUp;
 
-      <div className="container mx-auto max-w-6xl relative z-10">
+  return (
+    <section className="relative py-24 px-6 border-y border-border/50 bg-card/30 overflow-hidden z-10">
+      <div className="container mx-auto max-w-6xl relative z-10" ref={ref}>
         <motion.div
           ref={containerRef}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8 }}
+          variants={staggerContainer}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
           className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
         >
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 40, scale: 0.9 }}
-              animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.9 }}
-              transition={{ 
-                duration: 0.6, 
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1]
-              }}
-              whileHover={{ 
-                scale: 1.1, 
-                transition: { duration: 0.3 } 
-              }}
-              className="text-center group cursor-default"
+              variants={getFadeUp()}
+              className="text-center"
             >
-              {/* Floating emoji */}
-              <FloatingElement amplitude={10} duration={3 + index * 0.5}>
-                <span className="text-2xl mb-2 block opacity-60 group-hover:opacity-100 transition-opacity">
-                  {stat.icon}
-                </span>
-              </FloatingElement>
-              
-              <motion.div 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 bg-gradient-to-r from-editions-gold via-editions-purple to-editions-blue bg-clip-text text-transparent bg-[length:200%_auto]"
-                whileHover={{
-                  backgroundPosition: ['0%', '100%'],
-                  transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' }
-                }}
-              >
+              <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-foreground">
                 <CountUp 
                   end={stat.value} 
                   duration={2000} 
@@ -78,18 +49,10 @@ export const StatsSection: React.FC = () => {
                   suffix={stat.suffix}
                   trigger={isVisible} 
                 />
-              </motion.div>
-              <p className="text-sm md:text-base text-muted-foreground group-hover:text-foreground transition-colors">
-                <TextScramble text={stat.label} trigger={isVisible} speed={60} />
+              </div>
+              <p className="text-sm md:text-base text-muted-foreground">
+                {stat.label}
               </p>
-              
-              {/* Underline animation on hover */}
-              <motion.div 
-                className="h-0.5 bg-gradient-to-r from-editions-gold to-editions-purple mt-2 mx-auto"
-                initial={{ width: 0 }}
-                whileHover={{ width: '50%' }}
-                transition={{ duration: 0.3 }}
-              />
             </motion.div>
           ))}
         </motion.div>
@@ -100,140 +63,87 @@ export const StatsSection: React.FC = () => {
 
 /**
  * SkillsShowcase Component
- * Enhanced with parallax background and card hover effects
+ * Clean layout with consistent motion variants
  */
 export const SkillsShowcase: React.FC = () => {
-  const { offset } = useParallax(0.2);
   const containerRef = React.useRef(null);
   const inView = useInView(containerRef, { once: true, margin: '-50px' });
+  const prefersReducedMotion = useReducedMotion();
 
   const skillCategories = [
     { 
       title: 'Languages', 
       skills: ['Java', 'C++', 'Python', 'JavaScript (ES6+)', 'SQL'],
-      color: 'editions-gold',
-      gradient: 'from-editions-gold/20 to-transparent'
     },
     { 
       title: 'Frameworks & Libraries', 
       skills: ['React.js', 'Node.js', 'Tailwind CSS'],
-      color: 'editions-purple',
-      gradient: 'from-editions-purple/20 to-transparent'
     },
     { 
       title: 'Databases & Tools', 
       skills: ['MongoDB', 'Git', 'GitHub', 'Netlify', 'Render', 'Qlik Sense', 'Power BI'],
-      color: 'editions-blue',
-      gradient: 'from-editions-blue/20 to-transparent'
     },
     { 
       title: 'Core CS', 
       skills: ['Data Structures & Algorithms', 'DBMS', 'Operating Systems', 'OOP'],
-      color: 'editions-green',
-      gradient: 'from-editions-green/20 to-transparent'
     },
   ];
 
+  const getFadeUp = () => prefersReducedMotion ? fadeOnly : fadeUp;
+  const getScaleIn = () => prefersReducedMotion ? fadeOnly : scaleIn;
+
   return (
-    <section className="relative py-32 px-6 overflow-hidden mt-16" id="skills">
-      {/* Parallax dot pattern */}
-      <div 
-        className="absolute inset-0 opacity-5"
-        style={{ transform: `translateY(${offset * 0.5}px)` }}
-      >
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '40px 40px',
-        }} />
-      </div>
-
-      {/* Floating gradient orbs */}
-      <ParallaxContainer speed={0.3} className="absolute top-1/4 left-0 w-72 h-72 rounded-full bg-gradient-to-r from-editions-gold/10 to-transparent blur-3xl pointer-events-none" />
-      <ParallaxContainer speed={-0.2} className="absolute bottom-1/4 right-0 w-96 h-96 rounded-full bg-gradient-to-r from-editions-purple/10 to-transparent blur-3xl pointer-events-none" />
-
-      <div className="container mx-auto max-w-5xl relative z-10" ref={containerRef}>
+    <section className="relative py-32 px-6 overflow-hidden" id="skills" ref={containerRef}>
+      <div className="container mx-auto max-w-5xl relative z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center"
+          variants={getFadeUp()}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="text-center mb-16"
         >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-green mb-4">
-            <TextScramble text="TECHNICAL PROFICIENCY" trigger={inView} speed={40} />
+          <p className="text-sm tracking-[0.3em] uppercase text-editions-gold mb-4">
+            Technical Proficiency
           </p>
-
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display mb-12">
-            <Typewriter 
-              text="Skills & Expertise" 
-              speed={60} 
-              trigger={inView}
-              cursorClassName="text-editions-gold"
-            />
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display">
+            Skills & Expertise
           </h2>
+        </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-            {skillCategories.map((category, index) => (
+        {/* Skills Grid */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          {skillCategories.map((category) => (
+            <motion.div
+              key={category.title}
+              variants={getFadeUp()}
+              className="p-6 rounded-xl bg-card/50 border border-border/50"
+            >
+              <h3 className="text-lg font-semibold mb-4 text-editions-gold">
+                {category.title}
+              </h3>
               <motion.div
-                key={category.title}
-                initial={{ opacity: 0, y: 40, rotateX: -10 }}
-                animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 40, rotateX: -10 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: index * 0.15,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                whileHover={{ 
-                  y: -8,
-                  boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-                  transition: { duration: 0.3 }
-                }}
-                className={cn(
-                  'p-6 rounded-2xl bg-card/50 border border-border/50 backdrop-blur-sm relative overflow-hidden group cursor-default',
-                  'before:absolute before:inset-0 before:bg-gradient-to-br before:opacity-0 before:transition-opacity before:duration-500',
-                  `before:${category.gradient}`,
-                  'hover:before:opacity-100'
-                )}
+                variants={staggerContainerSmall}
+                initial="hidden"
+                animate={inView ? "visible" : "hidden"}
+                className="flex flex-wrap gap-2"
               >
-                {/* Animated border gradient */}
-                <motion.div 
-                  className={cn(
-                    'absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-                    `bg-gradient-to-r from-${category.color}/30 via-transparent to-${category.color}/30`
-                  )}
-                  style={{ padding: 1 }}
-                />
-                
-                <div className="relative z-10">
-                  <h3 className={cn('text-lg font-semibold mb-4', `text-${category.color}`)}>
-                    {category.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {category.skills.map((skill, skillIndex) => (
-                      <motion.span
-                        key={skill}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                        transition={{ 
-                          duration: 0.4, 
-                          delay: (index * 0.15) + (skillIndex * 0.05) + 0.3,
-                          ease: [0.16, 1, 0.3, 1]
-                        }}
-                        whileHover={{ 
-                          scale: 1.1, 
-                          backgroundColor: `hsl(var(--${category.color}) / 0.2)`,
-                          borderColor: `hsl(var(--${category.color}) / 0.5)`,
-                          transition: { duration: 0.2 }
-                        }}
-                        className="px-3 py-1.5 text-sm rounded-full border border-border/50 bg-background/50 transition-colors cursor-default"
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </div>
-                </div>
+                {category.skills.map((skill) => (
+                  <motion.span
+                    key={skill}
+                    variants={getScaleIn()}
+                    className="px-3 py-1.5 text-sm rounded-full border border-border/50 bg-background/50 text-muted-foreground"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
               </motion.div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

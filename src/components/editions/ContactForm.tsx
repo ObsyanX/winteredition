@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Send, Check, AlertCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { fadeOnly, staggerContainer, subtlePulse } from '@/lib/motion';
 
 const contactSchema = z.object({
   name: z.string()
@@ -35,6 +37,7 @@ interface ContactFormProps {
 export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const {
     register,
@@ -49,10 +52,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
     setIsSubmitting(true);
     
     try {
-      // Create mailto link with properly encoded data
       const mailtoLink = `mailto:duttasayan835@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(`From: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`)}`;
       
-      // Open email client
       window.open(mailtoLink, '_blank');
       
       setIsSuccess(true);
@@ -61,7 +62,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
         description: 'Please send the email from your email application.',
       });
       
-      // Reset form after delay
       setTimeout(() => {
         setIsSuccess(false);
         reset();
@@ -78,8 +78,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
   const inputClasses = cn(
     'w-full px-4 py-3 bg-card/50 border border-border/50 rounded-lg',
     'text-foreground placeholder:text-muted-foreground/50',
-    'focus:outline-none focus:border-editions-gold/50 focus:ring-1 focus:ring-editions-gold/20',
-    'transition-all duration-300'
+    'focus:outline-none focus:border-foreground/50 focus:ring-1 focus:ring-foreground/20',
+    'transition-colors duration-200'
   );
 
   const labelClasses = 'block text-sm font-medium text-foreground mb-2';
@@ -88,13 +88,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
     <motion.form
       onSubmit={handleSubmit(onSubmit)}
       className={cn('space-y-6', className)}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
     >
       {/* Name & Email Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        <motion.div variants={fadeOnly}>
           <label htmlFor="name" className={labelClasses}>Name</label>
           <div className="relative">
             <input
@@ -107,9 +107,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
             <AnimatePresence>
               {errors.name && (
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
                   <AlertCircle className="w-4 h-4 text-destructive" />
@@ -118,17 +118,11 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
             </AnimatePresence>
           </div>
           {errors.name && (
-            <motion.p
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-xs text-destructive"
-            >
-              {errors.name.message}
-            </motion.p>
+            <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>
           )}
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={fadeOnly}>
           <label htmlFor="email" className={labelClasses}>Email</label>
           <div className="relative">
             <input
@@ -141,9 +135,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
             <AnimatePresence>
               {errors.email && (
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                 >
                   <AlertCircle className="w-4 h-4 text-destructive" />
@@ -152,19 +146,13 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
             </AnimatePresence>
           </div>
           {errors.email && (
-            <motion.p
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-xs text-destructive"
-            >
-              {errors.email.message}
-            </motion.p>
+            <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* Subject */}
-      <div>
+      <motion.div variants={fadeOnly}>
         <label htmlFor="subject" className={labelClasses}>Subject</label>
         <div className="relative">
           <input
@@ -177,9 +165,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
           <AnimatePresence>
             {errors.subject && (
               <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 <AlertCircle className="w-4 h-4 text-destructive" />
@@ -188,18 +176,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
           </AnimatePresence>
         </div>
         {errors.subject && (
-          <motion.p
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-1 text-xs text-destructive"
-          >
-            {errors.subject.message}
-          </motion.p>
+          <p className="mt-1 text-xs text-destructive">{errors.subject.message}</p>
         )}
-      </div>
+      </motion.div>
 
       {/* Message */}
-      <div>
+      <motion.div variants={fadeOnly}>
         <label htmlFor="message" className={labelClasses}>Message</label>
         <div className="relative">
           <textarea
@@ -211,67 +193,64 @@ export const ContactForm: React.FC<ContactFormProps> = ({ className }) => {
           />
         </div>
         {errors.message && (
-          <motion.p
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-1 text-xs text-destructive"
-          >
-            {errors.message.message}
-          </motion.p>
+          <p className="mt-1 text-xs text-destructive">{errors.message.message}</p>
         )}
-      </div>
+      </motion.div>
 
-      {/* Submit Button */}
-      <motion.button
-        type="submit"
-        disabled={isSubmitting || isSuccess}
-        className={cn(
-          'w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg',
-          'font-medium text-background bg-foreground',
-          'hover:scale-[1.02] active:scale-[0.98]',
-          'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
-          'transition-all duration-300'
-        )}
-        whileHover={{ scale: isSubmitting || isSuccess ? 1 : 1.02 }}
-        whileTap={{ scale: isSubmitting || isSuccess ? 1 : 0.98 }}
-      >
-        <AnimatePresence mode="wait">
-          {isSubmitting ? (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="flex items-center gap-2"
-            >
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Sending...</span>
-            </motion.div>
-          ) : isSuccess ? (
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="flex items-center gap-2"
-            >
-              <Check className="w-5 h-5" />
-              <span>Message Sent!</span>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="default"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="flex items-center gap-2"
-            >
-              <span>Send Message</span>
-              <Send className="w-4 h-4" />
-            </motion.div>
+      {/* Submit Button with subtle pulse */}
+      <motion.div variants={fadeOnly}>
+        <motion.button
+          type="submit"
+          disabled={isSubmitting || isSuccess}
+          className={cn(
+            'w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg',
+            'font-medium text-background bg-foreground',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
+            'transition-colors duration-200'
           )}
-        </AnimatePresence>
-      </motion.button>
+          animate={!isSubmitting && !isSuccess && !prefersReducedMotion ? "pulse" : undefined}
+          variants={subtlePulse}
+          whileHover={!isSubmitting && !isSuccess ? { scale: 1.02 } : undefined}
+          whileTap={!isSubmitting && !isSuccess ? { scale: 0.98 } : undefined}
+        >
+          <AnimatePresence mode="wait">
+            {isSubmitting ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-2"
+              >
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Sending...</span>
+              </motion.div>
+            ) : isSuccess ? (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-2"
+              >
+                <Check className="w-5 h-5" />
+                <span>Message Sent!</span>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="default"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center gap-2"
+              >
+                <span>Send Message</span>
+                <Send className="w-4 h-4" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </motion.div>
     </motion.form>
   );
 };
