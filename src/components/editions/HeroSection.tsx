@@ -1,40 +1,38 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { MOTION, fadeUp, staggerContainer, ctaHover } from '@/lib/motion';
-import { cn } from '@/lib/utils';
+import { fadeUp, staggerContainer, ctaHover } from '@/lib/motion';
 import { Mail, ArrowRight } from 'lucide-react';
 import heroVideo from '@/assets/hero-video.mp4';
 
 /**
- * HeroSection Component - Editorial Split Layout
- * Modern, cinematic hero with scroll-responsive video
+ * HeroSection Component - Editorial Mask-Based Layout
+ * Video blends into background via gradient mask, not hard split
  */
 export const HeroSection: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Scroll-based transforms for video
+  // Scroll progress locked to hero viewport
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"]
   });
 
-  // Video parallax: scale up and drift on scroll
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const videoY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  // Video: subtle scale-up and vertical drift locked to scroll
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const videoY = useTransform(scrollYProgress, [0, 1], ['0%', '8%']);
   
-  // Text fade out and drift up on scroll
-  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.5], [0, -40]);
+  // Text: fade out and drift up as hero scrolls away
+  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.4], ['0%', '-8%']);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  // Simplified variants for reduced motion
   const getVariant = (variant: typeof fadeUp) => {
     if (prefersReducedMotion) {
       return {
@@ -48,16 +46,111 @@ export const HeroSection: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen min-h-[700px] flex items-center overflow-hidden snap-start"
+      className="relative h-screen min-h-[700px] overflow-hidden snap-start"
     >
-      {/* Main container - Split layout */}
-      <div className="relative z-10 w-full h-full flex flex-col lg:flex-row">
-        
-        {/* LEFT SIDE - Text Content */}
+      {/* DESKTOP: Full-bleed video with mask-based blend */}
+      <div className="absolute inset-0 hidden lg:block">
+        {/* Video layer */}
         <motion.div
-          className="relative z-20 w-full lg:w-1/2 h-auto lg:h-full flex flex-col justify-center px-6 sm:px-10 lg:px-16 xl:px-24 py-20 lg:py-0"
-          style={prefersReducedMotion ? {} : { opacity: textOpacity, y: textY }}
+          className="absolute inset-0"
+          style={prefersReducedMotion ? {} : { 
+            scale: videoScale,
+            y: videoY,
+          }}
         >
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='hsl(0,0%25,5%25)'/%3E%3C/svg%3E"
+          >
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+        </motion.div>
+
+        {/* Gradient mask: dissolves video into background from left */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `linear-gradient(
+              to right,
+              hsl(var(--background)) 0%,
+              hsl(var(--background)) 35%,
+              hsl(var(--background) / 0.85) 45%,
+              hsl(var(--background) / 0.4) 60%,
+              transparent 80%
+            )`,
+          }}
+        />
+
+        {/* Top/bottom cinematic vignette */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `linear-gradient(
+              to bottom,
+              hsl(var(--background) / 0.6) 0%,
+              transparent 20%,
+              transparent 80%,
+              hsl(var(--background) / 0.6) 100%
+            )`,
+          }}
+        />
+
+        {/* Subtle film grain */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.025] mix-blend-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+      </div>
+
+      {/* MOBILE: Stacked layout - no masks */}
+      <div className="absolute inset-0 lg:hidden">
+        {/* Solid background for text area */}
+        <div className="absolute inset-0 bg-background" />
+        
+        {/* Video positioned at bottom half */}
+        <div className="absolute bottom-0 left-0 right-0 h-[45%]">
+          <motion.div
+            className="absolute inset-0"
+            style={prefersReducedMotion ? {} : { 
+              scale: videoScale,
+            }}
+          >
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+          
+          {/* Top fade for mobile video */}
+          <div 
+            className="absolute inset-x-0 top-0 h-24 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Text content - positioned on left, overlays the masked video */}
+      <motion.div
+        className="relative z-10 h-full flex items-center"
+        style={prefersReducedMotion ? {} : { 
+          opacity: textOpacity, 
+          y: textY 
+        }}
+      >
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 pb-[45%] lg:pb-0">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -74,7 +167,7 @@ export const HeroSection: React.FC = () => {
               </span>
             </motion.div>
 
-            {/* Main Headline - Editorial, calm, single statement */}
+            {/* Main Headline */}
             <motion.h1
               variants={getVariant(fadeUp)}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-display font-medium tracking-tight leading-[1.1] mb-8 text-foreground"
@@ -115,66 +208,8 @@ export const HeroSection: React.FC = () => {
               </motion.a>
             </motion.div>
           </motion.div>
-        </motion.div>
-
-        {/* RIGHT SIDE - Video with editorial edge treatment */}
-        <div className="relative w-full lg:w-1/2 h-[50vh] lg:h-full flex-shrink-0">
-          {/* Soft gradient mask on left edge */}
-          <div 
-            className="absolute inset-0 z-10 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to right, hsl(var(--background)) 0%, transparent 25%)',
-            }}
-          />
-          
-          {/* Top/bottom fade for cinematic feel */}
-          <div 
-            className="absolute inset-0 z-10 pointer-events-none hidden lg:block"
-            style={{
-              background: 'linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 15%, transparent 85%, hsl(var(--background)) 100%)',
-            }}
-          />
-
-          {/* Mobile top fade */}
-          <div 
-            className="absolute inset-0 z-10 pointer-events-none lg:hidden"
-            style={{
-              background: 'linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 20%)',
-            }}
-          />
-
-          {/* Film grain overlay */}
-          <div 
-            className="absolute inset-0 z-20 pointer-events-none opacity-[0.03] mix-blend-overlay"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            }}
-          />
-
-          {/* Video container with scroll-based transforms */}
-          <motion.div
-            className="absolute inset-0 overflow-hidden"
-            style={prefersReducedMotion ? {} : { 
-              scale: videoScale,
-              y: videoY,
-            }}
-          >
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-              poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='hsl(0,0%25,5%25)'/%3E%3C/svg%3E"
-            >
-              <source src={heroVideo} type="video/mp4" />
-            </video>
-          </motion.div>
         </div>
-      </div>
-
-      {/* Subtle background for left side */}
-      <div className="absolute inset-0 z-0 bg-background" />
+      </motion.div>
     </section>
   );
 };
