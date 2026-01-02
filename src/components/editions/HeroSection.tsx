@@ -63,24 +63,27 @@ export const HeroSection: React.FC = () => {
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-[70%_center]"
             poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='hsl(0,0%25,5%25)'/%3E%3C/svg%3E"
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
         </motion.div>
 
-        {/* Gradient mask: dissolves video into background from left */}
+        {/* Gradient mask: ultra-soft dissolve from left - atmospheric blend */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
             background: `linear-gradient(
               to right,
               hsl(var(--background)) 0%,
-              hsl(var(--background)) 35%,
-              hsl(var(--background) / 0.85) 45%,
-              hsl(var(--background) / 0.4) 60%,
-              transparent 80%
+              hsl(var(--background)) 30%,
+              hsl(var(--background) / 0.95) 38%,
+              hsl(var(--background) / 0.8) 46%,
+              hsl(var(--background) / 0.55) 54%,
+              hsl(var(--background) / 0.3) 62%,
+              hsl(var(--background) / 0.12) 72%,
+              transparent 85%
             )`,
           }}
         />
