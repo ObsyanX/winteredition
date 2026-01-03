@@ -26,35 +26,35 @@ export const AboutSection: React.FC = () => {
   const getScaleIn = () => prefersReducedMotion ? fadeOnly : scaleIn;
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="about" ref={containerRef}>
+    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden" id="about" ref={containerRef}>
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section Header */}
         <motion.div
           variants={getFadeUp()}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-gold mb-4">
+          <p className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-editions-gold mb-3 sm:mb-4">
             About Me
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display">
             Get to Know Me
           </h2>
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
           {/* Photo Column */}
           <motion.div
             variants={getScaleIn()}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="relative"
+            className="relative order-2 lg:order-1"
           >
-            <div className="relative">
+            <div className="relative max-w-sm mx-auto lg:max-w-none">
               {/* Image container */}
-              <div className="relative overflow-hidden rounded-2xl border border-border/50">
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-border/50">
                 <img
                   src={profilePhoto}
                   alt="Sayan Dutta - Full-Stack Developer portrait"
@@ -65,9 +65,9 @@ export const AboutSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
                 
                 {/* Location badge */}
-                <div className="absolute bottom-4 left-4 flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50">
-                  <MapPin className="w-4 h-4 text-editions-gold" aria-hidden="true" />
-                  <span className="text-sm">Siliguri, India</span>
+                <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50">
+                  <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-editions-gold" aria-hidden="true" />
+                  <span className="text-xs sm:text-sm">Siliguri, India</span>
                 </div>
               </div>
             </div>
@@ -78,18 +78,18 @@ export const AboutSection: React.FC = () => {
             variants={staggerContainer}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="space-y-8"
+            className="space-y-6 sm:space-y-8 order-1 lg:order-2"
           >
             {/* Bio - using fadeOnly for paragraphs */}
-            <motion.div variants={fadeOnly} className="space-y-4">
-              <h3 className="text-xl font-semibold text-editions-gold">Hello!</h3>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+            <motion.div variants={fadeOnly} className="space-y-3 sm:space-y-4">
+              <h3 className="text-lg sm:text-xl font-semibold text-editions-gold">Hello!</h3>
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 I'm a final-year Computer Science student passionate about building intelligent, human-focused software.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 I enjoy working at the intersection of AI, design, and engineering — where clean UX meets performance and real-world impact.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 Currently exploring AI-driven interfaces, computer vision, and modern SaaS architectures.
               </p>
             </motion.div>
@@ -97,32 +97,32 @@ export const AboutSection: React.FC = () => {
             {/* Current Status */}
             <motion.div
               variants={fadeOnly}
-              className="flex items-center gap-3 p-4 rounded-xl bg-card/50 border border-border/50"
+              className="flex items-start sm:items-center gap-3 p-3 sm:p-4 rounded-xl bg-card/50 border border-border/50"
             >
-              <Calendar className="w-5 h-5 text-editions-purple" aria-hidden="true" />
+              <Calendar className="w-5 h-5 text-editions-purple flex-shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" />
               <div>
-                <p className="text-sm text-muted-foreground">Currently</p>
-                <p className="font-medium">Open to Software Engineering opportunities</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Currently</p>
+                <p className="text-sm sm:text-base font-medium">Open to Software Engineering opportunities</p>
               </div>
             </motion.div>
 
             {/* Interests Grid with stagger */}
             <motion.div variants={fadeOnly}>
-              <h4 className="text-sm uppercase tracking-wider text-muted-foreground mb-4">What I love</h4>
+              <h4 className="text-xs sm:text-sm uppercase tracking-wider text-muted-foreground mb-3 sm:mb-4">What I love</h4>
               <motion.div
                 variants={staggerContainerSmall}
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
-                className="grid grid-cols-2 gap-3"
+                className="grid grid-cols-2 gap-2 sm:gap-3"
               >
                 {interests.map((interest) => (
                   <motion.div
                     key={interest.label}
                     variants={prefersReducedMotion ? fadeOnly : scaleIn}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-card/30 border border-border/30"
+                    className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg bg-card/30 border border-border/30"
                   >
-                    <interest.icon className="w-5 h-5 text-editions-gold" aria-hidden="true" />
-                    <span className="text-sm">{interest.label}</span>
+                    <interest.icon className="w-4 h-4 sm:w-5 sm:h-5 text-editions-gold flex-shrink-0" aria-hidden="true" />
+                    <span className="text-xs sm:text-sm">{interest.label}</span>
                   </motion.div>
                 ))}
               </motion.div>

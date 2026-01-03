@@ -46,12 +46,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewDetails
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       onClick={onViewDetails}
-      className="group relative p-6 rounded-xl cursor-pointer bg-card/50 border border-border/50 hover:border-border transition-colors"
+      className="group relative p-4 sm:p-6 rounded-xl cursor-pointer bg-card/50 border border-border/50 hover:border-border transition-colors"
     >
       {/* Project Image */}
       {project.images && project.images[0] && (
         <motion.div
-          className="relative overflow-hidden rounded-lg mb-4 aspect-video"
+          className="relative overflow-hidden rounded-lg mb-3 sm:mb-4 aspect-video"
           variants={prefersReducedMotion ? undefined : imageHover}
           whileHover="hover"
         >
@@ -65,24 +65,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewDetails
       )}
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <h3 className="text-lg font-semibold mb-1 group-hover:text-editions-gold transition-colors">
+      <div className="flex items-start justify-between mb-2 sm:mb-3">
+        <div className="flex-1 min-w-0 pr-2">
+          <h3 className="text-base sm:text-lg font-semibold mb-0.5 sm:mb-1 group-hover:text-editions-gold transition-colors truncate">
             {project.title}
           </h3>
-          <p className="text-xs text-muted-foreground">{project.tech}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{project.tech}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
           {project.github && (
             <a
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="p-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+              className="p-1.5 sm:p-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-colors min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
               aria-label={`View ${project.title} on GitHub`}
             >
-              <Github className="w-4 h-4" />
+              <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </a>
           )}
           {project.live && (
@@ -91,26 +91,26 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewDetails
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="p-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+              className="p-1.5 sm:p-2 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-colors min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
               aria-label={`View ${project.title} live demo`}
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </a>
           )}
         </div>
       </div>
 
       {/* Problem Statement - 1 line */}
-      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+      <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
         {project.description}
       </p>
 
       {/* View Details */}
       <button
-        className="flex items-center gap-2 text-sm text-editions-gold hover:text-foreground transition-colors"
+        className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-editions-gold hover:text-foreground transition-colors min-h-[44px]"
         aria-label={`View details for ${project.title}`}
       >
-        <Eye className="w-4 h-4" />
+        <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         <span>View Details</span>
       </button>
     </motion.div>
@@ -191,22 +191,22 @@ export const SidekickSection: React.FC = () => {
   }, [activeFilter]);
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="projects" ref={containerRef}>
+    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden" id="projects" ref={containerRef}>
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Header */}
         <motion.div
           variants={prefersReducedMotion ? fadeOnly : fadeUp}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-gold mb-4">
+          <p className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-editions-gold mb-3 sm:mb-4">
             Featured Work
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display mb-4 sm:mb-6">
             Projects
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
             Building scalable solutions with modern technologies and AI integration
           </p>
         </motion.div>
@@ -216,14 +216,14 @@ export const SidekickSection: React.FC = () => {
           variants={prefersReducedMotion ? fadeOnly : fadeUp}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12"
         >
           {filters.map((filter) => (
             <button
               key={filter.value}
               onClick={() => setActiveFilter(filter.value)}
               className={cn(
-                "px-5 py-2 rounded-full text-sm font-medium transition-colors border",
+                "px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors border min-h-[40px] sm:min-h-[44px]",
                 activeFilter === filter.value
                   ? "bg-foreground text-background border-foreground"
                   : "bg-transparent text-muted-foreground border-border/50 hover:border-foreground hover:text-foreground"
@@ -240,7 +240,7 @@ export const SidekickSection: React.FC = () => {
           variants={staggerContainer}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (

@@ -26,14 +26,14 @@ export const StatsSection: React.FC = () => {
   const getFadeUp = () => prefersReducedMotion ? fadeOnly : fadeUp;
 
   return (
-    <section className="relative py-24 px-6 border-y border-border/50 bg-card/30 overflow-hidden z-10">
+    <section className="relative py-12 sm:py-16 lg:py-24 px-4 sm:px-6 border-y border-border/50 bg-card/30 overflow-hidden z-10">
       <div className="container mx-auto max-w-6xl relative z-10" ref={ref}>
         <motion.div
           ref={containerRef}
           variants={staggerContainer}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12"
         >
           {stats.map((stat, index) => (
             <motion.div
@@ -41,7 +41,7 @@ export const StatsSection: React.FC = () => {
               variants={getFadeUp()}
               className="text-center"
             >
-              <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-foreground">
+              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 text-foreground">
                 <CountUp 
                   end={stat.value} 
                   duration={2000} 
@@ -50,7 +50,7 @@ export const StatsSection: React.FC = () => {
                   trigger={isVisible} 
                 />
               </div>
-              <p className="text-sm md:text-base text-muted-foreground">
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground">
                 {stat.label}
               </p>
             </motion.div>
@@ -93,19 +93,19 @@ export const SkillsShowcase: React.FC = () => {
   const getScaleIn = () => prefersReducedMotion ? fadeOnly : scaleIn;
 
   return (
-    <section className="relative py-32 px-6 overflow-hidden" id="skills" ref={containerRef}>
+    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden" id="skills" ref={containerRef}>
       <div className="container mx-auto max-w-5xl relative z-10">
         {/* Header */}
         <motion.div
           variants={getFadeUp()}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-gold mb-4">
+          <p className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-editions-gold mb-3 sm:mb-4">
             Technical Proficiency
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display">
             Skills & Expertise
           </h2>
         </motion.div>
@@ -115,28 +115,28 @@ export const SkillsShowcase: React.FC = () => {
           variants={staggerContainer}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
         >
           {skillCategories.map((category) => (
             <motion.div
               key={category.title}
               variants={getFadeUp()}
-              className="p-6 rounded-xl bg-card/50 border border-border/50"
+              className="p-4 sm:p-6 rounded-xl bg-card/50 border border-border/50"
             >
-              <h3 className="text-lg font-semibold mb-4 text-editions-gold">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-editions-gold">
                 {category.title}
               </h3>
               <motion.div
                 variants={staggerContainerSmall}
                 initial="hidden"
                 animate={inView ? "visible" : "hidden"}
-                className="flex flex-wrap gap-2"
+                className="flex flex-wrap gap-1.5 sm:gap-2"
               >
                 {category.skills.map((skill) => (
                   <motion.span
                     key={skill}
                     variants={getScaleIn()}
-                    className="px-3 py-1.5 text-sm rounded-full border border-border/50 bg-background/50 text-muted-foreground"
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-full border border-border/50 bg-background/50 text-muted-foreground"
                   >
                     {skill}
                   </motion.span>
