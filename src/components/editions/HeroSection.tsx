@@ -62,7 +62,6 @@ export const HeroSection: React.FC = () => {
           <video
             autoPlay
             muted
-            loop
             playsInline
             className="absolute inset-0 w-full h-full object-cover object-[70%_center]"
             poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='hsl(0,0%25,5%25)'/%3E%3C/svg%3E"
