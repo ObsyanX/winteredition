@@ -69,7 +69,7 @@ export const TestimonialsSection: React.FC = () => {
 
   return (
     <section 
-      className="relative py-32 px-6 overflow-hidden mt-16" 
+      className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden mt-8 sm:mt-16" 
       id="testimonials" 
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
@@ -77,13 +77,13 @@ export const TestimonialsSection: React.FC = () => {
     >
       {/* Parallax decorations */}
       <motion.div
-        className="absolute top-1/4 left-0 w-64 h-64 text-editions-gold/5 pointer-events-none"
+        className="absolute top-1/4 left-0 w-32 sm:w-48 lg:w-64 h-32 sm:h-48 lg:h-64 text-editions-gold/5 pointer-events-none"
         style={{ y: offset * 0.2 }}
       >
         <Quote className="w-full h-full" aria-hidden="true" />
       </motion.div>
       <motion.div
-        className="absolute bottom-1/4 right-0 w-48 h-48 text-editions-purple/5 pointer-events-none rotate-180"
+        className="absolute bottom-1/4 right-0 w-24 sm:w-36 lg:w-48 h-24 sm:h-36 lg:h-48 text-editions-purple/5 pointer-events-none rotate-180"
         style={{ y: offset * -0.15 }}
       >
         <Quote className="w-full h-full" aria-hidden="true" />
@@ -95,12 +95,12 @@ export const TestimonialsSection: React.FC = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <p className="text-sm tracking-[0.3em] uppercase text-editions-gold mb-4">
+          <p className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-editions-gold mb-3 sm:mb-4">
             <TextScramble text="WHAT OTHERS SAY" trigger={inView} speed={40} />
           </p>
-          <h2 className="text-4xl md:text-6xl font-display">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display">
             Testimonials
           </h2>
         </motion.div>
@@ -112,10 +112,10 @@ export const TestimonialsSection: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative bg-gradient-to-b from-card/80 to-card/40 border border-border/50 rounded-2xl p-8 md:p-12"
+            className="relative bg-gradient-to-b from-card/80 to-card/40 border border-border/50 rounded-xl sm:rounded-2xl p-5 sm:p-8 md:p-12"
           >
             {/* Quote icon */}
-            <Quote className="absolute top-6 left-6 w-8 h-8 text-editions-gold/30" aria-hidden="true" />
+            <Quote className="absolute top-4 left-4 sm:top-6 sm:left-6 w-6 h-6 sm:w-8 sm:h-8 text-editions-gold/30" aria-hidden="true" />
 
             {/* Testimonial content */}
             <AnimatePresence mode="wait">
@@ -125,17 +125,17 @@ export const TestimonialsSection: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
-                className="text-center pt-8"
+                className="text-center pt-6 sm:pt-8"
               >
-                <blockquote className="text-xl md:text-2xl text-foreground/90 leading-relaxed mb-8 italic">
+                <blockquote className="text-base sm:text-lg md:text-xl lg:text-2xl text-foreground/90 leading-relaxed mb-6 sm:mb-8 italic">
                   "{testimonials[activeIndex].quote}"
                 </blockquote>
 
-                <div className="space-y-1">
-                  <p className="font-semibold text-editions-gold">
+                <div className="space-y-0.5 sm:space-y-1">
+                  <p className="font-semibold text-sm sm:text-base text-editions-gold">
                     {testimonials[activeIndex].author}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     {testimonials[activeIndex].role} • {testimonials[activeIndex].company}
                   </p>
                 </div>
@@ -143,32 +143,32 @@ export const TestimonialsSection: React.FC = () => {
             </AnimatePresence>
 
             {/* Gradient glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-editions-gold/10 via-editions-purple/10 to-editions-blue/10 rounded-2xl blur-xl -z-10 opacity-50" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-editions-gold/10 via-editions-purple/10 to-editions-blue/10 rounded-xl sm:rounded-2xl blur-xl -z-10 opacity-50" />
           </motion.div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-8">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
             <motion.button
               onClick={goToPrevious}
-              className="p-3 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all"
+              className="p-2.5 sm:p-3 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all min-w-[44px] min-h-[44px] flex items-center justify-center"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Previous testimonial"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.button>
 
             {/* Progress dots */}
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 sm:gap-2">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
                   className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
+                    "h-1.5 sm:h-2 rounded-full transition-all duration-300 min-h-[6px]",
                     index === activeIndex 
-                      ? "w-8 bg-editions-gold" 
-                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                      ? "w-6 sm:w-8 bg-editions-gold" 
+                      : "w-1.5 sm:w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                   )}
                   aria-label={`Go to testimonial ${index + 1}`}
                   aria-current={index === activeIndex ? 'true' : 'false'}
@@ -178,19 +178,19 @@ export const TestimonialsSection: React.FC = () => {
 
             <motion.button
               onClick={goToNext}
-              className="p-3 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all"
+              className="p-2.5 sm:p-3 rounded-full border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground transition-all min-w-[44px] min-h-[44px] flex items-center justify-center"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Next testimonial"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.button>
           </div>
 
           {/* Auto-progress indicator */}
           {!isPaused && inView && (
             <motion.div
-              className="absolute bottom-0 left-0 h-1 bg-editions-gold/50 rounded-full"
+              className="absolute bottom-0 left-0 h-0.5 sm:h-1 bg-editions-gold/50 rounded-full"
               initial={{ width: '0%' }}
               animate={{ width: '100%' }}
               transition={{ duration: 5, ease: 'linear' }}
