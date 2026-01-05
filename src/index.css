@@ -118,6 +118,26 @@
     --sidebar-border: 40 10% 82%;
     --sidebar-ring: 38 95% 50%;
   }
+
+  /* Theme transition variables */
+  :root, .dark, .light {
+    --theme-transition-duration: 0.5s;
+    --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Smooth theme transitions */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: 
+    background-color var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing),
+    fill var(--theme-transition-duration) var(--theme-transition-timing),
+    stroke var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing) !important;
 }
 
 @layer base {
