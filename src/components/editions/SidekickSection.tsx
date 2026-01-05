@@ -3,7 +3,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeUp, fadeOnly, staggerContainer, cardHover, imageHover, MOTION } from '@/lib/motion';
 import { cn } from '@/lib/utils';
-import { ExternalLink, Github, Eye } from 'lucide-react';
+import { ExternalLink, Github, Eye, ChevronDown, ChevronUp, Code2, Database, Layout, Cpu } from 'lucide-react';
 import { ProjectModal } from './ProjectModal';
 
 // Import project screenshots
@@ -11,7 +11,7 @@ import savitrAiImage from '@/assets/project-savitr-ai.jpg';
 import cyberpunkChatbotImage from '@/assets/project-cyberpunk-chatbot.jpg';
 import roadSafetyImage from '@/assets/project-road-safety.jpg';
 
-type ProjectCategory = 'all' | 'fullstack' | 'frontend' | 'data';
+type ProjectCategory = 'all' | 'fullstack' | 'frontend' | 'data' | 'backend';
 
 interface Project {
   title: string;
@@ -23,6 +23,7 @@ interface Project {
   images?: string[];
   fullDescription?: string;
   category: ProjectCategory;
+  isTemplate?: boolean;
 }
 
 interface ProjectCardProps {
@@ -39,6 +40,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewDetails
   const prefersReducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
 
+  // Icon mapping for template projects
+  const getCategoryIcon = () => {
+    switch (project.category) {
+      case 'frontend': return Layout;
+      case 'backend': return Database;
+      case 'fullstack': return Code2;
+      case 'data': return Cpu;
+      default: return Code2;
+    }
+  };
+
+  const CategoryIcon = getCategoryIcon();
+
   return (
     <motion.div
       variants={prefersReducedMotion ? fadeOnly : fadeUp}
@@ -48,8 +62,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewDetails
       onClick={onViewDetails}
       className="group relative p-4 sm:p-6 rounded-xl cursor-pointer bg-card/50 border border-border/50 hover:border-border transition-colors"
     >
-      {/* Project Image */}
-      {project.images && project.images[0] && (
+      {/* Project Image or Template Placeholder */}
+      {project.images && project.images[0] ? (
         <motion.div
           className="relative overflow-hidden rounded-lg mb-3 sm:mb-4 aspect-video"
           variants={prefersReducedMotion ? undefined : imageHover}
@@ -61,6 +75,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onViewDetails
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-60" />
+        </motion.div>
+      ) : (
+        <motion.div
+          className="relative overflow-hidden rounded-lg mb-3 sm:mb-4 aspect-video bg-gradient-to-br from-card to-muted/30 flex items-center justify-center border border-border/30"
+          variants={prefersReducedMotion ? undefined : imageHover}
+          whileHover="hover"
+        >
+          <CategoryIcon className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground/30 group-hover:text-editions-gold/50 transition-colors" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
         </motion.div>
       )}
 
@@ -127,11 +150,15 @@ export const SidekickSection: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState<ProjectCategory>('all');
+  const [showAll, setShowAll] = useState(false);
+
+  const INITIAL_VISIBLE_COUNT = 3;
 
   const filters: { label: string; value: ProjectCategory }[] = [
     { label: 'All', value: 'all' },
     { label: 'Full-Stack', value: 'fullstack' },
     { label: 'Frontend', value: 'frontend' },
+    { label: 'Backend', value: 'backend' },
     { label: 'Data', value: 'data' },
   ];
 
@@ -183,12 +210,96 @@ export const SidekickSection: React.FC = () => {
       images: [roadSafetyImage],
       category: 'data',
     },
+    // Additional template projects
+    {
+      title: 'E-Commerce Platform',
+      tech: 'React, Node.js, PostgreSQL, Stripe',
+      description: 'Full-stack e-commerce solution with payment integration, inventory management, and admin dashboard.',
+      fullDescription: 'A comprehensive e-commerce platform featuring user authentication, product catalog, shopping cart, Stripe payment integration, and a complete admin dashboard for inventory and order management.',
+      highlights: [
+        'Secure payment processing with Stripe',
+        'Real-time inventory tracking',
+        'Admin dashboard with analytics',
+        'Responsive mobile-first design',
+      ],
+      github: 'https://github.com/sayandutta',
+      category: 'fullstack',
+      isTemplate: true,
+    },
+    {
+      title: 'API Gateway Service',
+      tech: 'Go, Redis, Docker, Kubernetes',
+      description: 'High-performance API gateway with rate limiting, caching, and load balancing capabilities.',
+      fullDescription: 'Built a scalable API gateway service handling authentication, rate limiting, request caching with Redis, and intelligent load balancing. Deployed on Kubernetes for high availability.',
+      highlights: [
+        'Sub-millisecond response times',
+        'Redis-powered caching layer',
+        'JWT authentication middleware',
+        'Kubernetes orchestration',
+      ],
+      github: 'https://github.com/sayandutta',
+      category: 'backend',
+      isTemplate: true,
+    },
+    {
+      title: 'Portfolio Dashboard',
+      tech: 'React, TypeScript, Tailwind CSS',
+      description: 'Interactive portfolio dashboard with data visualizations, dark mode, and smooth animations.',
+      fullDescription: 'A modern portfolio dashboard showcasing projects, skills, and achievements with interactive charts, theme switching, and Framer Motion animations for a polished user experience.',
+      highlights: [
+        'Interactive data visualizations',
+        'Dark/Light theme support',
+        'Framer Motion animations',
+        'Fully responsive design',
+      ],
+      github: 'https://github.com/sayandutta',
+      live: '#',
+      category: 'frontend',
+      isTemplate: true,
+    },
+    {
+      title: 'ML Pipeline Orchestrator',
+      tech: 'Python, Apache Airflow, MLflow',
+      description: 'Automated machine learning pipeline for model training, evaluation, and deployment workflows.',
+      fullDescription: 'An end-to-end ML pipeline orchestration system using Apache Airflow for workflow management and MLflow for experiment tracking, model versioning, and deployment automation.',
+      highlights: [
+        'Automated model training pipelines',
+        'Experiment tracking with MLflow',
+        'Model versioning and registry',
+        'Scheduled batch predictions',
+      ],
+      github: 'https://github.com/sayandutta',
+      category: 'data',
+      isTemplate: true,
+    },
+    {
+      title: 'Real-Time Chat App',
+      tech: 'React, Socket.io, Express, MongoDB',
+      description: 'Real-time messaging application with private rooms, file sharing, and message encryption.',
+      fullDescription: 'A full-stack real-time chat application featuring WebSocket communication, private chat rooms, end-to-end encryption, file sharing capabilities, and message history persistence.',
+      highlights: [
+        'Real-time WebSocket messaging',
+        'End-to-end encryption',
+        'File sharing support',
+        'Message history & search',
+      ],
+      github: 'https://github.com/sayandutta',
+      live: '#',
+      category: 'fullstack',
+      isTemplate: true,
+    },
   ];
 
   const filteredProjects = useMemo(() => {
-    if (activeFilter === 'all') return projects;
-    return projects.filter(p => p.category === activeFilter);
+    let filtered = activeFilter === 'all' ? projects : projects.filter(p => p.category === activeFilter);
+    return showAll ? filtered : filtered.slice(0, INITIAL_VISIBLE_COUNT);
+  }, [activeFilter, showAll]);
+
+  const totalFilteredCount = useMemo(() => {
+    return activeFilter === 'all' ? projects.length : projects.filter(p => p.category === activeFilter).length;
   }, [activeFilter]);
+
+  const hasMoreProjects = totalFilteredCount > INITIAL_VISIBLE_COUNT;
 
   return (
     <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden" id="projects" ref={containerRef}>
@@ -221,7 +332,10 @@ export const SidekickSection: React.FC = () => {
           {filters.map((filter) => (
             <button
               key={filter.value}
-              onClick={() => setActiveFilter(filter.value)}
+              onClick={() => {
+                setActiveFilter(filter.value);
+                setShowAll(false);
+              }}
               className={cn(
                 "px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-colors border min-h-[40px] sm:min-h-[44px]",
                 activeFilter === filter.value
@@ -253,6 +367,47 @@ export const SidekickSection: React.FC = () => {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* View More Button */}
+        {hasMoreProjects && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex justify-center mt-8 sm:mt-12"
+          >
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              className={cn(
+                "group flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full",
+                "border border-border/50 bg-card/30 backdrop-blur-sm",
+                "hover:border-editions-gold/50 hover:bg-card/50",
+                "transition-colors text-sm sm:text-base font-medium",
+                "min-h-[48px] sm:min-h-[52px]"
+              )}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                {showAll ? 'Show Less' : `View More (${totalFilteredCount - INITIAL_VISIBLE_COUNT})`}
+              </span>
+              <motion.div
+                animate={{ y: showAll ? 0 : [0, 4, 0] }}
+                transition={{ 
+                  duration: 1.5, 
+                  repeat: showAll ? 0 : Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                {showAll ? (
+                  <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-editions-gold" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-editions-gold" />
+                )}
+              </motion.div>
+            </motion.button>
+          </motion.div>
+        )}
       </div>
 
       {/* Project Modal */}
