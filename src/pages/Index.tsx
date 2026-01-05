@@ -10,11 +10,13 @@ import { TechStackSection } from '@/components/editions/TechStackSection';
 import { TestimonialsSection } from '@/components/editions/TestimonialsSection';
 import { Footer } from '@/components/editions/Footer';
 import { CustomCursor } from '@/components/editions/CustomCursor';
+import { ScrollToTop } from '@/components/editions/ScrollToTop';
 
 const Index: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       <CustomCursor />
+      <ScrollToTop />
       <GeometricBackground />
       <Navigation />
 

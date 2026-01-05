@@ -10,6 +10,11 @@ import { ProjectModal } from './ProjectModal';
 import savitrAiImage from '@/assets/project-savitr-ai.jpg';
 import cyberpunkChatbotImage from '@/assets/project-cyberpunk-chatbot.jpg';
 import roadSafetyImage from '@/assets/project-road-safety.jpg';
+import ecommerceImage from '@/assets/project-ecommerce.jpg';
+import apiGatewayImage from '@/assets/project-api-gateway.jpg';
+import portfolioDashboardImage from '@/assets/project-portfolio-dashboard.jpg';
+import mlPipelineImage from '@/assets/project-ml-pipeline.jpg';
+import chatAppImage from '@/assets/project-chat-app.jpg';
 
 type ProjectCategory = 'all' | 'fullstack' | 'frontend' | 'data' | 'backend';
 
@@ -210,7 +215,7 @@ export const SidekickSection: React.FC = () => {
       images: [roadSafetyImage],
       category: 'data',
     },
-    // Additional template projects
+    // Additional projects with screenshots
     {
       title: 'E-Commerce Platform',
       tech: 'React, Node.js, PostgreSQL, Stripe',
@@ -223,8 +228,8 @@ export const SidekickSection: React.FC = () => {
         'Responsive mobile-first design',
       ],
       github: 'https://github.com/sayandutta',
+      images: [ecommerceImage],
       category: 'fullstack',
-      isTemplate: true,
     },
     {
       title: 'API Gateway Service',
@@ -238,8 +243,8 @@ export const SidekickSection: React.FC = () => {
         'Kubernetes orchestration',
       ],
       github: 'https://github.com/sayandutta',
+      images: [apiGatewayImage],
       category: 'backend',
-      isTemplate: true,
     },
     {
       title: 'Portfolio Dashboard',
@@ -254,8 +259,8 @@ export const SidekickSection: React.FC = () => {
       ],
       github: 'https://github.com/sayandutta',
       live: '#',
+      images: [portfolioDashboardImage],
       category: 'frontend',
-      isTemplate: true,
     },
     {
       title: 'ML Pipeline Orchestrator',
@@ -269,8 +274,8 @@ export const SidekickSection: React.FC = () => {
         'Scheduled batch predictions',
       ],
       github: 'https://github.com/sayandutta',
+      images: [mlPipelineImage],
       category: 'data',
-      isTemplate: true,
     },
     {
       title: 'Real-Time Chat App',
@@ -285,8 +290,8 @@ export const SidekickSection: React.FC = () => {
       ],
       github: 'https://github.com/sayandutta',
       live: '#',
+      images: [chatAppImage],
       category: 'fullstack',
-      isTemplate: true,
     },
   ];
 
