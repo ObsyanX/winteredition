@@ -1,6 +1,6 @@
 # 🌐 SD Portfolio
 
-**Live Demo:** https://sdportfolio.lovable.app  
+**Live Demo:** [https://sdportfolio.lovable.app  ](https://my-portfolio-phi-three-22.vercel.app/)
 
 A modern, responsive **personal developer portfolio website** showcasing my skills, projects, experience, and contact information. This portfolio is designed to present my professional profile clearly to recruiters, hiring managers, and collaborators.
 
@@ -20,12 +20,7 @@ A modern, responsive **personal developer portfolio website** showcasing my skil
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** HTML, CSS, JavaScript  
-- **Platform:** Lovable  
+- **Frontend:** Nextjs,Typescript  
 - **Styling:** Modern CSS  
-- **Deployment:** Lovable Hosting  
 
----
-
-## 📂 Project Structure
 
