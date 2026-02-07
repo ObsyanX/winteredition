@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fadeUp, fadeOnly, scaleIn, staggerContainer, staggerContainerSmall } from '@/lib/motion';
 import { MapPin, Calendar, Code, Lightbulb, Coffee, Heart } from 'lucide-react';
-import profilePhoto from '@/assets/photograph.png';
+import profilePhoto from '@/assets/Photograph.png';
 
 /**
  * AboutSection Component
