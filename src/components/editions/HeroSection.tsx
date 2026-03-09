@@ -179,13 +179,20 @@ export const HeroSection: React.FC = () => {
               </span>
             </motion.div>
 
+            {/* SEO H1 - visually hidden but accessible */}
+            <h1 className="sr-only">
+              Sayan Dutta – Software Developer & AI Developer Portfolio
+            </h1>
+
             {/* Main Headline - responsive clamp sizing */}
-            <motion.h1
+            <motion.p
               variants={getVariant(fadeUp)}
               className="text-[clamp(1.75rem,5vw,3.5rem)] font-display font-medium tracking-tight leading-[1.15] mb-5 sm:mb-8 text-foreground"
+              role="heading"
+              aria-level={2}
             >
               Designing intelligent, human-centric digital experiences.
-            </motion.h1>
+            </motion.p>
 
             {/* Sub-headline */}
             <motion.p
