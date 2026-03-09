@@ -36,10 +36,10 @@ export const AboutSection: React.FC = () => {
           className="text-center mb-10 sm:mb-16"
         >
           <p className="text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-editions-gold mb-3 sm:mb-4">
-            About Me
+            About
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display">
-            Get to Know Me
+            About Sayan Dutta
           </h2>
         </motion.div>
 
@@ -84,13 +84,10 @@ export const AboutSection: React.FC = () => {
             <motion.div variants={fadeOnly} className="space-y-3 sm:space-y-4">
               <h3 className="text-lg sm:text-xl font-semibold text-editions-gold">Hello!</h3>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                I'm a final-year Computer Science student passionate about building intelligent, human-focused software.
+                Sayan Dutta is a software developer focused on building intelligent and scalable digital products. Specializing in artificial intelligence, machine learning, and full-stack web development, Sayan Dutta creates modern applications that combine strong engineering principles with user-centered design.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                I enjoy working at the intersection of AI, design, and engineering — where clean UX meets performance and real-world impact.
-              </p>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Currently exploring AI-driven interfaces, computer vision, and modern SaaS architectures.
+                This portfolio showcases the projects, technical expertise, and development journey of Sayan Dutta.
               </p>
             </motion.div>
 

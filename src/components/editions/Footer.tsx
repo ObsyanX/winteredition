@@ -93,7 +93,7 @@ export const Footer: React.FC = () => {
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
-              © 2025 Sayan Dutta. Built with React & Tailwind.
+              © 2026 Sayan Dutta. Built and maintained by Sayan Dutta.
             </p>
             <span className="text-[10px] sm:text-xs text-muted-foreground">
               Designed with intention
