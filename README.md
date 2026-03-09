@@ -1,6 +1,6 @@
 # 🌐 SD Portfolio
 
-**Live Demo:** [my portfolio link 👈 ](https://my-portfolio-phi-three-22.vercel.app/)
+**Live Demo:** [my portfolio link 👈 ](https://sayan-dutta-portfolio.vercel.app)
 
 A modern, responsive **personal developer portfolio website** showcasing my skills, projects, experience, and contact information. This portfolio is designed to present my professional profile clearly to recruiters, hiring managers, and collaborators.
 
